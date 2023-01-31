@@ -1,6 +1,7 @@
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
 import { Colors } from "../../constants/styles";
+import { useState } from "react";
 
 function Input({
   label,
@@ -8,21 +9,43 @@ function Input({
   secure,
   onUpdateValue,
   value,
-  isInvalid,
+  onFocus = () => {},
+  error,
 }) {
+  const [isFocused, setIsFocused] = useState(false);
+
   return (
     <View style={styles.inputContainer}>
-      <Text style={[styles.label, isInvalid && styles.labelInvalid]}>
-        {label}
-      </Text>
+      <Text style={[styles.label, error && styles.labelInvalid]}>{label}</Text>
       <TextInput
-        style={[styles.input, isInvalid && styles.inputInvalid]}
+        style={[
+          styles.input,
+          {
+            borderColor: error
+              ? "red"
+              : isFocused
+              ? Colors.primary500
+              : "#c4d0fb",
+          },
+        ]}
         autoCapitalize={false}
         keyboardType={keyboardType}
         secureTextEntry={secure}
         onChangeText={onUpdateValue}
         value={value}
+        onFocus={() => {
+          onFocus();
+          setIsFocused(true);
+        }}
+        onBlur={() => {
+          setIsFocused(false);
+        }}
       />
+      {error && (
+        <Text style={{ color: "red", fontSize: 12, marginBottom: 7 }}>
+          {error}
+        </Text>
+      )}
     </View>
   );
 }
