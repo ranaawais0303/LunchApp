@@ -7,7 +7,7 @@ import FlatButton from "../components/UI/FlatButton";
 import Button from "../components/UI/Button";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 
-function SignupScreen() {
+function SignupScreen({ navigation }) {
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -18,7 +18,7 @@ function SignupScreen() {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [errors, setErrors] = useState({});
 
-  /////////////////// On Submit button and check validations
+  /////////////////// On Submit button and check validations//////////////////////
   function onSubmitHandler() {
     let valid = true;
     if (!data.email) {
@@ -61,7 +61,7 @@ function SignupScreen() {
       signupHandler();
     }
   }
-
+  ///////////////////////////////////////////////////////////////
   ////Input handler
   function handleInput(name, input) {
     console.log(name, input);
@@ -71,6 +71,8 @@ function SignupScreen() {
   function handleError(errorMessage, input) {
     setErrors((prevState) => ({ ...prevState, [input]: errorMessage }));
   }
+
+  ///////////Signup handler Create user in database..............................
   async function signupHandler() {
     setIsAuthenticating(true);
     try {
@@ -79,15 +81,21 @@ function SignupScreen() {
         lastName: data.lastName,
         email: data.email,
         password: data.password,
-      });
-
-      console.log(res);
-      if (res.split(" ").pop() === "409") {
-        Alert.alert(res, "USER IS ALREADY EXIST");
-      } else if (res === "CONFLICT") {
-        Alert.alert(res, "USER chacha EXIST");
+      })
+        .then((res) => res.data)
+        .catch((err) => {
+          console.log(err.message);
+          if (err.message.split(" ").pop() === "409") {
+            Alert.alert(
+              err.message,
+              "User is already exsist please varify mail"
+            );
+          }
+        });
+      if (res) {
+        setIsAuthenticating(false);
+        navigation.navigate("OTPScreen");
       }
-      console.log("there is an error");
     } catch (error) {
       Alert.alert(error);
       setIsAuthenticating(false);
@@ -95,8 +103,7 @@ function SignupScreen() {
     setIsAuthenticating(false);
   }
 
-  console.log(data.firstName);
-
+  //////////////Loading Overlay//////////////////////////////////
   if (isAuthenticating) {
     return <LoadingOverlay message="Logging user in...." />;
   }
