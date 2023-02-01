@@ -74,12 +74,25 @@ function SignupScreen() {
   async function signupHandler() {
     setIsAuthenticating(true);
     try {
-      await createUser(data);
-      setIsAuthenticating(false);
+      const res = await createUser({
+        firstName: data.firstName,
+        lastName: data.lastName,
+        email: data.email,
+        password: data.password,
+      });
+
+      console.log(res);
+      if (res.split(" ").pop() === "409") {
+        Alert.alert(res, "USER IS ALREADY EXIST");
+      } else if (res === "CONFLICT") {
+        Alert.alert(res, "USER chacha EXIST");
+      }
+      console.log("there is an error");
     } catch (error) {
       Alert.alert(error);
       setIsAuthenticating(false);
     }
+    setIsAuthenticating(false);
   }
 
   console.log(data.firstName);
