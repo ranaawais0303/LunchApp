@@ -9,6 +9,7 @@ function Input({
   secure,
   onUpdateValue,
   value,
+  editable,
   onFocus = () => {},
   error,
 }) {
@@ -33,6 +34,7 @@ function Input({
         secureTextEntry={secure}
         onChangeText={onUpdateValue}
         value={value}
+        editable={editable}
         onFocus={() => {
           onFocus();
           setIsFocused(true);

@@ -6,9 +6,9 @@ import Input from "../components/Auth/Input";
 import Button from "../components/UI/Button";
 import { varifyUser } from "../util/auth";
 
-function OTPScreen({ navigation }) {
+function OTPScreen({ navigation, route }) {
+  const email = route.params.email;
   const [data, setData] = useState({
-    email: "",
     otp: "",
   });
   const [errors, setErrors] = useState({});
@@ -16,17 +16,7 @@ function OTPScreen({ navigation }) {
 
   function onSubmitHandler() {
     let valid = true;
-    if (!data.email) {
-      handleError("please input email", "email");
-      valid = false;
-    } else if (
-      !data.email.match(
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-      )
-    ) {
-      handleError("Email must include @", "email");
-      valid = false;
-    }
+
     if (!data.otp) {
       handleError("please input otp", "otp");
       valid = false;
@@ -53,7 +43,7 @@ function OTPScreen({ navigation }) {
   async function varify() {
     try {
       const res = await varifyUser({
-        email: data.email,
+        email: email,
         otp: data.otp,
       })
         .then((res) => {
@@ -88,16 +78,7 @@ function OTPScreen({ navigation }) {
   //////////////////////////////////////////////
   return (
     <View style={styles.container}>
-      <Input
-        label="Email Address"
-        onUpdateValue={handleInput.bind(null, "email")}
-        keyboardType="email-address"
-        value={data.email}
-        error={errors.email}
-        onFocus={() => {
-          handleError(null, "email");
-        }}
-      />
+      <Input label="Email Address" value={email} editable={false} />
       <Input
         onUpdateValue={handleInput.bind(null, "otp")}
         label="Generated OTP"

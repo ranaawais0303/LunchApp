@@ -25,8 +25,6 @@ export async function varifyUser({ email, otp }) {
     email: email,
     otp: otp,
   });
-  console.log("......", email);
-  console.log("......", otp);
   return res;
   //   return authenticate("signup/varify", email, otp);
 }

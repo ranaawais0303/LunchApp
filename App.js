@@ -49,7 +49,7 @@ export default function App() {
       <StatusBar style="inverted" />
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="OTPScreen"
+          // initialRouteName="OTPScreen"
           screenOptions={{
             headerStyle: { backgroundColor: Colors.primary500 },
             headerTintColor: "white",

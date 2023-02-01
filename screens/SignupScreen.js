@@ -94,7 +94,9 @@ function SignupScreen({ navigation }) {
         });
       if (res) {
         setIsAuthenticating(false);
-        navigation.navigate("OTPScreen");
+        navigation.navigate("OTPScreen", {
+          email: data.email,
+        });
       }
     } catch (error) {
       Alert.alert(error);
