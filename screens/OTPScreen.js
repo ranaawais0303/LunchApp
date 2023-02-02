@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
 import { View, StyleSheet, Alert } from "react-native";
-import { Colors } from "../constants/styles";
 import Input from "../components/Auth/Input";
 import Button from "../components/UI/Button";
 import { varifyUser } from "../util/auth";
+import StarterContainer from "../components/UI/StarterContainer";
 
 function OTPScreen({ navigation, route }) {
   const email = route.params.email;
@@ -41,32 +41,26 @@ function OTPScreen({ navigation, route }) {
   }
 
   async function varify() {
-    try {
-      const res = await varifyUser({
-        email: email,
-        otp: data.otp,
+    setIsAuthenticating(true);
+
+    varifyUser({
+      email: email,
+      otp: data.otp,
+    })
+      .then((res) => {
+        console.log(res.data);
+        navigation.navigate("Login");
+        //   setIsAuthenticating(false);
       })
-        .then((res) => {
-          console.log(res.data);
-          navigation.navigate("Login");
-          //   setIsAuthenticating(false);
-        })
-        .catch((err) => {
-          //   Alert.alert(err.message, "User is already exsist please varify mail");
-          if (err.code === "ERR_BAD_REQUEST" || err.code === "ERR_NETWORK") {
-            Alert.alert(err.code, "Invalid enteries");
-            console.log(err.code);
-            return;
-          }
-        });
-      //   if (res.data) {
-      //     navigation.navigate("Login");
-      //     setIsAuthenticating(false);
-      //   }
-    } catch (error) {
-      Alert.alert(error);
-      setIsAuthenticating(false);
-    }
+      .catch((err) => {
+        //   Alert.alert(err.message, "User is already exsist please varify mail");
+        if (err.code === "ERR_BAD_REQUEST" || err.code === "ERR_NETWORK") {
+          Alert.alert(err.code, "Invalid enteries");
+          console.log(err.code);
+          return;
+        }
+      });
+
     setIsAuthenticating(false);
   }
 
@@ -77,7 +71,7 @@ function OTPScreen({ navigation, route }) {
 
   //////////////////////////////////////////////
   return (
-    <View style={styles.container}>
+    <StarterContainer>
       <Input label="Email Address" value={email} editable={false} />
       <Input
         onUpdateValue={handleInput.bind(null, "otp")}
@@ -91,23 +85,10 @@ function OTPScreen({ navigation, route }) {
       <View style={styles.buttons}>
         <Button onPress={onSubmitHandler}> varify</Button>
       </View>
-    </View>
+    </StarterContainer>
   );
 }
 
 export default OTPScreen;
 
-const styles = StyleSheet.create({
-  container: {
-    marginTop: 64,
-    marginHorizontal: 32,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: Colors.primary800,
-    elevation: 2,
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.35,
-    shadowRadius: 4,
-  },
-});
+const styles = StyleSheet.create({});

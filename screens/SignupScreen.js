@@ -6,6 +6,7 @@ import Input from "../components/Auth/Input";
 import FlatButton from "../components/UI/FlatButton";
 import Button from "../components/UI/Button";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
+import StarterContainer from "../components/UI/StarterContainer";
 
 function SignupScreen({ navigation }) {
   const [data, setData] = useState({
@@ -75,34 +76,30 @@ function SignupScreen({ navigation }) {
   ///////////Signup handler Create user in database..............................
   async function signupHandler() {
     setIsAuthenticating(true);
-    try {
-      const res = await createUser({
-        firstName: data.firstName,
-        lastName: data.lastName,
-        email: data.email,
-        password: data.password,
-      })
-        .then((res) => res.data)
-        .catch((err) => {
-          console.log(err.message);
-          if (err.message.split(" ").pop() === "409") {
-            Alert.alert(
-              err.message,
-              "User is already exsist please varify mail"
-            );
-          }
-        });
-      if (res) {
-        setIsAuthenticating(false);
+    createUser({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+    })
+      .then((res) => {
+        console.log(res.data);
         navigation.navigate("OTPScreen", {
           email: data.email,
         });
-      }
-    } catch (error) {
-      Alert.alert(error);
-      setIsAuthenticating(false);
-    }
+      })
+      .catch((err) => {
+        console.log(err.message);
+        if (err.message.split(" ").pop() === "409") {
+          Alert.alert(err.message, "User is already exsist please varify mail");
+        }
+      });
     setIsAuthenticating(false);
+  }
+
+  /////////////For Login Screen/////////////////////////////////
+  function screenChangeHandler() {
+    navigation.navigate("Login");
   }
 
   //////////////Loading Overlay//////////////////////////////////
@@ -111,7 +108,7 @@ function SignupScreen({ navigation }) {
   }
   return (
     <ScrollView>
-      <View style={styles.container}>
+      <StarterContainer>
         <Input
           onUpdateValue={handleInput.bind(null, "firstName")}
           label="firstName"
@@ -160,32 +157,19 @@ function SignupScreen({ navigation }) {
             handleError(null, "passwordConfirm");
           }}
         />
-
         <View style={styles.buttons}>
           <Button onPress={onSubmitHandler}> Sign Up</Button>
         </View>
         <View style={styles.buttons}>
-          <FlatButton>Log in instead</FlatButton>
+          <FlatButton onPress={screenChangeHandler}>Log in instead</FlatButton>
         </View>
-      </View>
+      </StarterContainer>
     </ScrollView>
   );
 }
 
 export default SignupScreen;
 const styles = StyleSheet.create({
-  container: {
-    marginTop: 64,
-    marginHorizontal: 32,
-    padding: 16,
-    borderRadius: 8,
-    backgroundColor: Colors.primary800,
-    elevation: 2,
-    shadowColor: "black",
-    shadowOffset: { width: 1, height: 1 },
-    shadowOpacity: 0.35,
-    shadowRadius: 4,
-  },
   buttons: {
     marginTop: 12,
   },
