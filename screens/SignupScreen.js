@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { createUser } from "../util/auth";
 import { Alert, ScrollView, StyleSheet, View } from "react-native";
-import { Colors } from "../constants/styles";
 import Input from "../components/Auth/Input";
 import FlatButton from "../components/UI/FlatButton";
 import Button from "../components/UI/Button";

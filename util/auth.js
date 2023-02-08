@@ -28,6 +28,12 @@ export async function varifyUser({ email, otp }) {
   return res;
   //   return authenticate("signup/varify", email, otp);
 }
-export function login(email, password) {
-  return authenticate("login", email, password);
+export async function login({ email, password }) {
+  const url = `${BACKEND_URL}/login`;
+  const res = await axios.post(url, {
+    email: email,
+    password: password,
+  });
+
+  return res;
 }
