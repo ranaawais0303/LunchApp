@@ -37,3 +37,11 @@ export async function login({ email, password }) {
 
   return res;
 }
+
+export async function resendOTP({ email }) {
+  const url = `${BACKEND_URL}/signup/resendOTP`;
+  const res = await axios.post(url, {
+    email: email,
+  });
+  return res;
+}

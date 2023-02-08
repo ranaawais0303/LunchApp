@@ -11,6 +11,7 @@ import { useAuth } from "../store/auth-context";
 
 /////////////////////////////////////////////////////////////////////
 function LoginScreen({ navigation }) {
+  ///////////////////   Set States    /////////////////////////
   const [token, setToken] = useState("");
 
   const [data, setData] = useState({
@@ -24,10 +25,8 @@ function LoginScreen({ navigation }) {
 
   const authCtx = useAuth();
 
-  ////////////////////////////////////////
-  ////////////handle input
+  ////////////////////  handle input   ///////////////////////
   function handleInput(name, input) {
-    console.log(name, input);
     setData((prevState) => ({ ...prevState, [name]: input }));
   }
   ///Error Handler/////////////
@@ -35,8 +34,7 @@ function LoginScreen({ navigation }) {
     setErrors((prevState) => ({ ...prevState, [input]: errorMessage }));
   }
 
-  //////////////////////////////////////////////////////////////
-  ////////submit handler
+  ///////////////////   submit handler   ////////////////////////////
   function onSubmitHandler() {
     let valid = true;
     if (!data.email) {
@@ -63,8 +61,7 @@ function LoginScreen({ navigation }) {
     }
   }
 
-  ////////////////////////////////////////////////////////////////////
-  ///////////Login handler Generate token..............................
+  ///////////////   Login handler Generate token    //////////////////////
   function loginHandler() {
     setIsAuthenticating(true);
 
@@ -76,31 +73,32 @@ function LoginScreen({ navigation }) {
         setToken(res.data.token);
 
         authCtx.authenticate(res.data.token);
-        const t = AsyncStorage.getItem("token");
-        console.log(t, "---------------");
+
+        setIsAuthenticating(false);
       })
       .catch((err) => {
         if (err.message.split(" ").pop() === "401") {
           Alert.alert(err.message, "email or password is incorrect");
         }
+        if (err.message.split(" ").pop() === "422") {
+          Alert.alert(err.message, "Please varify your account");
+        }
         console.log(err);
+        setIsAuthenticating(false);
       });
-    setIsAuthenticating(false);
-    // }
   }
 
-  //////////////////////////////////////////////////////////////
-  /////////////For signup Screen/////////////////////////////////
+  ///////////////////   For signup Screen    ///////////////////////////////
   function screenChangeHandler() {
     navigation.navigate("Signup");
   }
 
-  ///////////////////////////////////////////////////////////
-  //////////////Loading Overlay//////////////////////////////////
+  /////////////////   Loading Overlay   //////////////////////////////////
   if (isAuthenticating) {
     return <LoadingOverlay message="Logging user in...." />;
   }
-  //////////////////////////////////////////////////
+
+  ////////////////////////    Component   ///////////////////////
   return (
     <StarterContainer>
       <Input
@@ -134,6 +132,7 @@ function LoginScreen({ navigation }) {
 }
 
 export default LoginScreen;
+
 const styles = StyleSheet.create({
   buttons: {
     marginTop: 12,

@@ -8,6 +8,7 @@ import LoadingOverlay from "../components/UI/LoadingOverlay";
 import StarterContainer from "../components/UI/StarterContainer";
 
 function SignupScreen({ navigation }) {
+  ////////////////////////    Set States    //////////////////////////////
   const [data, setData] = useState({
     firstName: "",
     lastName: "",
@@ -18,7 +19,7 @@ function SignupScreen({ navigation }) {
   const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [errors, setErrors] = useState({});
 
-  /////////////////// On Submit button and check validations//////////////////////
+  //////////////   On Submit button and check validations    ////////////
   function onSubmitHandler() {
     let valid = true;
     if (!data.email) {
@@ -61,8 +62,8 @@ function SignupScreen({ navigation }) {
       signupHandler();
     }
   }
-  ///////////////////////////////////////////////////////////////
-  ////Input handler
+  ////////////////////////////    Input handler   ////////////////////////
+  ////
   function handleInput(name, input) {
     console.log(name, input);
     setData((prevState) => ({ ...prevState, [name]: input }));
@@ -72,7 +73,7 @@ function SignupScreen({ navigation }) {
     setErrors((prevState) => ({ ...prevState, [input]: errorMessage }));
   }
 
-  ///////////Signup handler Create user in database..............................
+  ///////////   Signup handler Create user in database    ////////////////
   async function signupHandler() {
     setIsAuthenticating(true);
     createUser({
@@ -86,25 +87,28 @@ function SignupScreen({ navigation }) {
         navigation.navigate("OTPScreen", {
           email: data.email,
         });
+        setIsAuthenticating(false);
       })
       .catch((err) => {
         console.log(err.message);
         if (err.message.split(" ").pop() === "409") {
           Alert.alert(err.message, "User is already exsist please varify mail");
         }
+        setIsAuthenticating(false);
       });
-    setIsAuthenticating(false);
   }
 
-  /////////////For Login Screen/////////////////////////////////
+  //////////////////   For Login Screen    ///////////////////////////
   function screenChangeHandler() {
     navigation.navigate("Login");
   }
 
-  //////////////Loading Overlay//////////////////////////////////
+  //////////////////    Loading Overlay   ////////////////////////////s
   if (isAuthenticating) {
     return <LoadingOverlay message="Logging user in...." />;
   }
+
+  /////////////////   Main Component    ///////////////////////////////
   return (
     <ScrollView>
       <StarterContainer>
