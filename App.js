@@ -11,47 +11,11 @@ import OTPScreen from "./screens/OTPScreen";
 import AuthContextProvider, { useAuth } from "./store/auth-context";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import IconButton from "./components/UI/IconButton";
+import ForgotScreen from "./screens/ForgotScreen";
+import ChangePasswordScreen from "./screens/ChangePasswordScreen";
 
 const Stack = createNativeStackNavigator();
 
-// function AuthenticatedStack() {
-//   return (
-//     <Stack.Navigator>
-//       <Stack.Screen name="Welcome" component={WelcomeScreen} />
-//     </Stack.Navigator>
-//   );
-// }
-// function AuthStack() {
-//   return (
-//     <Stack.Navigator
-//       // initialRouteName="OTPScreen"
-//       screenOptions={{
-//         headerLeft: () => false,
-//         headerStyle: { backgroundColor: Colors.primary500 },
-//         headerTintColor: "white",
-//         contentStyle: {
-//           backgroundColor: Colors.primary100,
-//         },
-//       }}
-//     >
-//       <Stack.Screen name="Login" component={LoginScreen} />
-//       <Stack.Screen name="Signup" component={SignupScreen} />
-//       <Stack.Screen name="OTPScreen" component={OTPScreen} />
-//     </Stack.Navigator>
-//   );
-// }
-
-// export default function App() {
-//   return (
-//     <>
-//       <StatusBar style="inverted" />
-//       <NavigationContainer>
-//         {true && <Auth />}
-//         {false && <Authenticated />}
-//       </NavigationContainer>
-//     </>
-//   );
-// }
 function AuthStack() {
   return (
     <Stack.Navigator
@@ -65,6 +29,7 @@ function AuthStack() {
       <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Signup" component={SignupScreen} />
       <Stack.Screen name="OTPScreen" component={OTPScreen} />
+      <Stack.Screen name="Forgot" component={ForgotScreen} />
     </Stack.Navigator>
   );
 }
@@ -79,20 +44,38 @@ function AuthenticatedStack() {
         contentStyle: { backgroundColor: Colors.primary100 },
       }}
     >
-      <Stack.Screen
-        name="Welcome"
-        component={WelcomeScreen}
-        options={{
-          headerRight: ({ tintColor }) => (
-            <IconButton
-              icon="exit"
-              size={24}
-              color={tintColor}
-              onPress={authCtx.logout}
-            />
-          ),
-        }}
-      />
+      {!authCtx.isForgot && (
+        <Stack.Screen
+          name="Welcome"
+          component={WelcomeScreen}
+          options={{
+            headerRight: ({ tintColor }) => (
+              <IconButton
+                icon="exit"
+                size={24}
+                color={tintColor}
+                onPress={authCtx.logout}
+              />
+            ),
+          }}
+        />
+      )}
+      {authCtx.isForgot && (
+        <Stack.Screen
+          name="changePassword"
+          component={ChangePasswordScreen}
+          options={{
+            headerRight: ({ tintColor }) => (
+              <IconButton
+                icon="exit"
+                size={24}
+                color={tintColor}
+                onPress={authCtx.logout}
+              />
+            ),
+          }}
+        />
+      )}
     </Stack.Navigator>
   );
 }

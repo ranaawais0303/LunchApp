@@ -1,20 +1,20 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { login } from "../util/auth";
 import { Alert, StyleSheet, View } from "react-native";
 import Input from "../components/Auth/Input";
-import FlatButton from "../components/UI/FlatButton";
 import Button from "../components/UI/Button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import StarterContainer from "../components/UI/StarterContainer";
 import { useAuth } from "../store/auth-context";
 
 /////////////////////////////////////////////////////////////////////
-function LoginScreen({ navigation }) {
+function ChangePasswordScreen({ navigation }) {
   ///////////////////   Set States    /////////////////////////
 
   const [data, setData] = useState({
-    email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -35,17 +35,7 @@ function LoginScreen({ navigation }) {
   ///////////////////   submit handler   ////////////////////////////
   function onSubmitHandler() {
     let valid = true;
-    if (!data.email) {
-      handleError("please input email", "email");
-      valid = false;
-    } else if (
-      !data.email.match(
-        /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
-      )
-    ) {
-      handleError("Email must include @", "email");
-      valid = false;
-    }
+
     if (!data.password) {
       handleError("please input Password", "password");
       valid = false;
@@ -53,47 +43,24 @@ function LoginScreen({ navigation }) {
       handleError("Min password length of 5", "password");
       valid = false;
     }
+    if (!data.confirmPassword) {
+      handleError("please input confirm Password", "confirmPassword");
+    } else if (data.confirmPassword !== data.password) {
+      handleError(
+        "please confirm Password must be same as password",
+        "confirmPassword"
+      );
+    }
 
     if (valid) {
-      loginHandler();
+      forgotHandler();
     }
   }
 
   ///////////////   Login handler Generate token    //////////////////////
-  function loginHandler() {
-    setIsAuthenticating(true);
-
-    login({
-      email: data.email,
-      password: data.password,
-    })
-      .then((res) => {
-        setToken(res.data.token);
-
-        authCtx.authenticate(res.data.token);
-
-        setIsAuthenticating(false);
-      })
-      .catch((err) => {
-        if (err.message.split(" ").pop() === "401") {
-          Alert.alert(err.message, "email or password is incorrect");
-        }
-        if (err.message.split(" ").pop() === "422") {
-          Alert.alert(err.message, "Please varify your account");
-        }
-        console.log(err);
-        setIsAuthenticating(false);
-      });
-  }
-
-  ///////////////////   For forgot password Screen    ///////////////////////////////
-  function forgotScreen() {
-    navigation.navigate("Forgot");
-  }
-
-  ///////////////////   For signup Screen    ///////////////////////////////
-  function screenChangeHandler() {
-    navigation.navigate("Signup");
+  function forgotHandler() {
+    // setIsAuthenticating(true);
+    console.log("forgotHandler handler");
   }
 
   /////////////////   Loading Overlay   //////////////////////////////////
@@ -107,16 +74,6 @@ function LoginScreen({ navigation }) {
       {isAuthenticating && <LoadingOverlay message="Logging user in...." />}
       <StarterContainer>
         <Input
-          label="Email Address"
-          onUpdateValue={handleInput.bind(null, "email")}
-          keyboardType="email-address"
-          value={data.email}
-          error={errors.email}
-          onFocus={() => {
-            handleError(null, "email");
-          }}
-        />
-        <Input
           label="Password"
           onUpdateValue={handleInput.bind(null, "password")}
           secure
@@ -126,23 +83,25 @@ function LoginScreen({ navigation }) {
             handleError(null, "password");
           }}
         />
+        <Input
+          label="Confirm Password"
+          onUpdateValue={handleInput.bind(null, "confirmPassword")}
+          secure
+          value={data.confirmPassword}
+          error={errors.confirmPassword}
+          onFocus={() => {
+            handleError(null, "confirmPassword");
+          }}
+        />
         <View style={styles.buttons}>
-          <Button onPress={onSubmitHandler}> Login</Button>
-        </View>
-        <View style={styles.buttons}>
-          <FlatButton onPress={screenChangeHandler}>
-            Create a new user
-          </FlatButton>
-        </View>
-        <View style={styles.buttons2}>
-          <FlatButton onPress={forgotScreen}>Forgot Password?</FlatButton>
+          <Button onPress={onSubmitHandler}> change Password</Button>
         </View>
       </StarterContainer>
     </>
   );
 }
 
-export default LoginScreen;
+export default ChangePasswordScreen;
 
 const styles = StyleSheet.create({
   buttons: {

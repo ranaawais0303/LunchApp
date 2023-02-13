@@ -45,3 +45,10 @@ export async function resendOTP({ email }) {
   });
   return res;
 }
+export async function forgotPassword({ email }) {
+  const url = `${BACKEND_URL}/forgotPassword`;
+  const res = await axios.post(url, {
+    email: email,
+  });
+  return res;
+}
