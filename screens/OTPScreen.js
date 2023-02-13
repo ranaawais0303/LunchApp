@@ -87,30 +87,33 @@ function OTPScreen({ navigation, route }) {
   }
 
   //////////////    Loading Overlay   //////////////////////////////////
-  if (isAuthenticating) {
-    return <LoadingOverlay message="Logging user in...." />;
-  }
+  // if (isAuthenticating) {
+  //   return <LoadingOverlay message="OTP  sending...." />;
+  // }
 
   //////////////    Main Component    ////////////////////
   return (
-    <StarterContainer>
-      {/* <Input label="Email Address" value={email} editable={false} /> */}
-      <Input
-        onUpdateValue={handleInput.bind(null, "otp")}
-        label="Generated OTP"
-        value={data.otp}
-        error={errors.otp}
-        onFocus={() => {
-          handleError(null, "otp");
-        }}
-      />
-      <View>
-        <FlatButton onPress={resendOTPHandler}>Resend OTP?</FlatButton>
-      </View>
-      <View style={styles.buttons}>
-        <Button onPress={onSubmitHandler}> varify</Button>
-      </View>
-    </StarterContainer>
+    <>
+      {isAuthenticating && <LoadingOverlay message="Logging user in...." />}
+      <StarterContainer>
+        {/* <Input label="Email Address" value={email} editable={false} /> */}
+        <Input
+          onUpdateValue={handleInput.bind(null, "otp")}
+          label="Generated OTP"
+          value={data.otp}
+          error={errors.otp}
+          onFocus={() => {
+            handleError(null, "otp");
+          }}
+        />
+        <View>
+          <FlatButton onPress={resendOTPHandler}>Resend OTP?</FlatButton>
+        </View>
+        <View style={styles.buttons}>
+          <Button onPress={onSubmitHandler}> varify</Button>
+        </View>
+      </StarterContainer>
+    </>
   );
 }
 

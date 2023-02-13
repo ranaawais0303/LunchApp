@@ -104,13 +104,15 @@ function SignupScreen({ navigation }) {
   }
 
   //////////////////    Loading Overlay   ////////////////////////////s
-  if (isAuthenticating) {
-    return <LoadingOverlay message="Logging user in...." />;
-  }
+  // if (isAuthenticating) {
+  //   return <LoadingOverlay message="signing up user ...." />;
+  // }
 
   /////////////////   Main Component    ///////////////////////////////
   return (
     <ScrollView>
+      {isAuthenticating && <LoadingOverlay message="signing up user ...." />}
+
       <StarterContainer>
         <Input
           onUpdateValue={handleInput.bind(null, "firstName")}

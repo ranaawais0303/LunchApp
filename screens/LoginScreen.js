@@ -94,40 +94,45 @@ function LoginScreen({ navigation }) {
   }
 
   /////////////////   Loading Overlay   //////////////////////////////////
-  if (isAuthenticating) {
-    return <LoadingOverlay message="Logging user in...." />;
-  }
+  // if (isAuthenticating) {
+  //   return <LoadingOverlay message="Logging user in...." />;
+  // }
 
   ////////////////////////    Component   ///////////////////////
   return (
-    <StarterContainer>
-      <Input
-        label="Email Address"
-        onUpdateValue={handleInput.bind(null, "email")}
-        keyboardType="email-address"
-        value={data.email}
-        error={errors.email}
-        onFocus={() => {
-          handleError(null, "email");
-        }}
-      />
-      <Input
-        label="Password"
-        onUpdateValue={handleInput.bind(null, "password")}
-        secure
-        value={data.password}
-        error={errors.password}
-        onFocus={() => {
-          handleError(null, "password");
-        }}
-      />
-      <View style={styles.buttons}>
-        <Button onPress={onSubmitHandler}> Login</Button>
-      </View>
-      <View style={styles.buttons}>
-        <FlatButton onPress={screenChangeHandler}>Create a new user</FlatButton>
-      </View>
-    </StarterContainer>
+    <>
+      {isAuthenticating && <LoadingOverlay message="Logging user in...." />}
+      <StarterContainer>
+        <Input
+          label="Email Address"
+          onUpdateValue={handleInput.bind(null, "email")}
+          keyboardType="email-address"
+          value={data.email}
+          error={errors.email}
+          onFocus={() => {
+            handleError(null, "email");
+          }}
+        />
+        <Input
+          label="Password"
+          onUpdateValue={handleInput.bind(null, "password")}
+          secure
+          value={data.password}
+          error={errors.password}
+          onFocus={() => {
+            handleError(null, "password");
+          }}
+        />
+        <View style={styles.buttons}>
+          <Button onPress={onSubmitHandler}> Login</Button>
+        </View>
+        <View style={styles.buttons}>
+          <FlatButton onPress={screenChangeHandler}>
+            Create a new user
+          </FlatButton>
+        </View>
+      </StarterContainer>
+    </>
   );
 }
 
