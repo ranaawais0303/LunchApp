@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { login } from "../util/auth";
 import { Alert, StyleSheet, View } from "react-native";
 import Input from "../components/Auth/Input";
 import Button from "../components/UI/Button";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import StarterContainer from "../components/UI/StarterContainer";
 import { useAuth } from "../store/auth-context";
+import { changePassword } from "../util/auth";
 
 /////////////////////////////////////////////////////////////////////
 function ChangePasswordScreen({ navigation }) {
@@ -22,6 +21,9 @@ function ChangePasswordScreen({ navigation }) {
   const [errors, setErrors] = useState({});
 
   const authCtx = useAuth();
+
+  ///Email set by async storage
+  const email = authCtx.forgot;
 
   ////////////////////  handle input   ///////////////////////
   function handleInput(name, input) {
@@ -53,28 +55,40 @@ function ChangePasswordScreen({ navigation }) {
     }
 
     if (valid) {
-      forgotHandler();
+      changePasswordHandler();
     }
   }
 
   ///////////////   Login handler Generate token    //////////////////////
-  function forgotHandler() {
-    // setIsAuthenticating(true);
+  function changePasswordHandler() {
+    setIsAuthenticating(true);
     console.log("forgotHandler handler");
+    changePassword({
+      email: email,
+      password: data.password,
+    })
+      .then((res) => {
+        console.log(res.data, "Change password data");
+        Alert.alert("password successfully changed");
+        authCtx.removeForgot();
+        setIsAuthenticating(false);
+      })
+      .catch((err) => {
+        setIsAuthenticating(false);
+        if (err.message.split(" ").pop() === "401") {
+          Alert.alert(err.message, "email is incorrect");
+        }
+        Alert.alert(err.code, "Invalid Request");
+      });
   }
 
-  /////////////////   Loading Overlay   //////////////////////////////////
-  // if (isAuthenticating) {
-  //   return <LoadingOverlay message="Logging user in...." />;
-  // }
-
-  ////////////////////////    Component   ///////////////////////
+  ////////////////////////  Main  Component   ///////////////////////
   return (
     <>
       {isAuthenticating && <LoadingOverlay message="Logging user in...." />}
       <StarterContainer>
         <Input
-          label="Password"
+          label=" New Password"
           onUpdateValue={handleInput.bind(null, "password")}
           secure
           value={data.password}
@@ -84,7 +98,7 @@ function ChangePasswordScreen({ navigation }) {
           }}
         />
         <Input
-          label="Confirm Password"
+          label="Confirm New Password"
           onUpdateValue={handleInput.bind(null, "confirmPassword")}
           secure
           value={data.confirmPassword}
@@ -100,7 +114,6 @@ function ChangePasswordScreen({ navigation }) {
     </>
   );
 }
-
 export default ChangePasswordScreen;
 
 const styles = StyleSheet.create({

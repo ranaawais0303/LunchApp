@@ -61,20 +61,7 @@ function AuthenticatedStack() {
         />
       )}
       {authCtx.isForgot && (
-        <Stack.Screen
-          name="changePassword"
-          component={ChangePasswordScreen}
-          options={{
-            headerRight: ({ tintColor }) => (
-              <IconButton
-                icon="exit"
-                size={24}
-                color={tintColor}
-                onPress={authCtx.logout}
-              />
-            ),
-          }}
-        />
+        <Stack.Screen name="changePassword" component={ChangePasswordScreen} />
       )}
     </Stack.Navigator>
   );
@@ -100,6 +87,13 @@ function Root() {
       }
       setIsTryingLogin(false);
     }
+    async function fetchForgot() {
+      const storedForgot = await AsyncStorage.getItem("forgot");
+      if (storedForgot) {
+        authCtx.addForgot(storedForgot);
+      }
+    }
+    fetchForgot();
     fetchToken();
   }, []);
   if (isTryingLogin) {

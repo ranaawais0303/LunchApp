@@ -4,6 +4,7 @@ import { Alert, StyleSheet, View } from "react-native";
 import Input from "../components/Auth/Input";
 import FlatButton from "../components/UI/FlatButton";
 import Button from "../components/UI/Button";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import StarterContainer from "../components/UI/StarterContainer";
 import { useAuth } from "../store/auth-context";
@@ -11,6 +12,7 @@ import { useAuth } from "../store/auth-context";
 /////////////////////////////////////////////////////////////////////
 function LoginScreen({ navigation }) {
   ///////////////////   Set States    /////////////////////////
+  const [token, setToken] = useState("");
 
   const [data, setData] = useState({
     email: "",
@@ -71,6 +73,7 @@ function LoginScreen({ navigation }) {
         setToken(res.data.token);
 
         authCtx.authenticate(res.data.token);
+        authCtx.addForgot(data.email);
 
         setIsAuthenticating(false);
       })

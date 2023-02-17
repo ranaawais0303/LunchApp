@@ -35,6 +35,7 @@ export async function login({ email, password }) {
     password: password,
   });
 
+  console.log(res.data);
   return res;
 }
 
@@ -49,6 +50,15 @@ export async function forgotPassword({ email }) {
   const url = `${BACKEND_URL}/forgotPassword`;
   const res = await axios.post(url, {
     email: email,
+  });
+  return res;
+}
+
+export async function changePassword({ email, password }) {
+  const url = `${BACKEND_URL}/changePassword`;
+  const res = await axios.post(url, {
+    email: email,
+    password: password,
   });
   return res;
 }

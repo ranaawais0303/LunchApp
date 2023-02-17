@@ -27,9 +27,10 @@ function AuthContextProvider({ children }) {
     token: authToken,
     // !!conver into boolean give the same result as token if token then true if not then false.
     isAuthenticated: !!authToken,
-    isForgot: !!forgot,
     authenticate: authenticate,
     logout: logout,
+    forgot: forgot,
+    isForgot: !!forgot,
     addForgot: addForgot,
     removeForgot: removeForgot,
   };
