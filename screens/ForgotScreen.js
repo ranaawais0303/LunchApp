@@ -57,7 +57,7 @@ function ForgotScreen({ navigation, route }) {
       .then((res) => {
         console.log(res.data, "Forgot password");
 
-        authCtx.addForgot(res.data.email);
+        authCtx.addForgot(data.email);
         navigation.navigate("Login");
         Alert.alert("password sent to this email");
         setIsAuthenticating(false);

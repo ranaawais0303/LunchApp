@@ -114,7 +114,7 @@ function Root() {
         authCtx.addForgot(storedForgot);
       }
     }
-    // fetchForgot();
+    fetchForgot();
     fetchToken();
   });
   if (isTryingLogin) {

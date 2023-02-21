@@ -72,9 +72,12 @@ function LoginScreen({ navigation }) {
       .then((res) => {
         setToken(res.data.token);
 
+        console.log(res.data);
         authCtx.authenticate(res.data.token);
-        // authCtx.addForgot(data.email);
-
+        if (res.data.user.forgot === true) {
+          console.log("now there is a forgot");
+          authCtx.addForgot(data.email);
+        }
         setIsAuthenticating(false);
       })
       .catch((err) => {
