@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import IconButton from "./components/UI/IconButton";
 import ForgotScreen from "./screens/ForgotScreen";
 import ChangePasswordScreen from "./screens/ChangePasswordScreen";
+import axios from "axios";
 
 const Stack = createNativeStackNavigator();
 
@@ -81,10 +82,30 @@ function Root() {
   const authCtx = useAuth();
   useEffect(() => {
     async function fetchToken() {
+      // const date = new Date().toLocaleString("en-US", {
+      //   timeZone: "Asia/calcutta",
+      // });
+      // console.log(date);
       const storedToken = await AsyncStorage.getItem("token");
-      if (storedToken) {
-        authCtx.authenticate(storedToken);
-      }
+      console.log("storedToken", storedToken);
+      await axios
+        .get("http://192.168.1.124:8000/api/users/tokenVarify", {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        })
+        .then((response) => {
+          authCtx.authenticate(storedToken);
+
+          console.log(response.data, "this is our data");
+        })
+        .catch((error) => {
+          authCtx.logout();
+        });
+
+      // if (storedToken) {
+      //   // authCtx.authenticate(storedToken);
+      // }
       setIsTryingLogin(false);
     }
     async function fetchForgot() {
@@ -93,9 +114,9 @@ function Root() {
         authCtx.addForgot(storedForgot);
       }
     }
-    fetchForgot();
+    // fetchForgot();
     fetchToken();
-  }, []);
+  });
   if (isTryingLogin) {
     return <AppLoading />;
   }

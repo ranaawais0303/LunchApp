@@ -73,7 +73,7 @@ function LoginScreen({ navigation }) {
         setToken(res.data.token);
 
         authCtx.authenticate(res.data.token);
-        authCtx.addForgot(data.email);
+        // authCtx.addForgot(data.email);
 
         setIsAuthenticating(false);
       })

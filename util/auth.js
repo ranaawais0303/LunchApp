@@ -35,7 +35,6 @@ export async function login({ email, password }) {
     password: password,
   });
 
-  console.log(res.data);
   return res;
 }
 
