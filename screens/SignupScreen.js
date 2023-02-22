@@ -65,7 +65,6 @@ function SignupScreen({ navigation }) {
   ////////////////////////////    Input handler   ////////////////////////
   ////
   function handleInput(name, input) {
-    console.log(name, input);
     setData((prevState) => ({ ...prevState, [name]: input }));
   }
   ///Error Handler/////////////

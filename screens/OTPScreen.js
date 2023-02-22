@@ -85,12 +85,6 @@ function OTPScreen({ navigation, route }) {
         Alert.alert(err.code, "Invalid Request");
       });
   }
-
-  //////////////    Loading Overlay   //////////////////////////////////
-  // if (isAuthenticating) {
-  //   return <LoadingOverlay message="OTP  sending...." />;
-  // }
-
   //////////////    Main Component    ////////////////////
   return (
     <>

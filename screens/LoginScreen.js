@@ -102,11 +102,6 @@ function LoginScreen({ navigation }) {
     navigation.navigate("Signup");
   }
 
-  /////////////////   Loading Overlay   //////////////////////////////////
-  // if (isAuthenticating) {
-  //   return <LoadingOverlay message="Logging user in...." />;
-  // }
-
   ////////////////////////    Component   ///////////////////////
   return (
     <>

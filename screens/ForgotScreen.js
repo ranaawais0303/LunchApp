@@ -3,12 +3,12 @@ import React, { useState } from "react";
 import { View, StyleSheet, Alert } from "react-native";
 import Input from "../components/Auth/Input";
 import Button from "../components/UI/Button";
-import { forgotPassword, resendOTP, varifyUser } from "../util/auth";
+import { forgotPassword } from "../util/auth";
 import StarterContainer from "../components/UI/StarterContainer";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import { useAuth } from "../store/auth-context";
 
-function ForgotScreen({ navigation, route }) {
+function ForgotScreen({ navigation }) {
   ///////////////////   set States    //////////////////////////
   const [data, setData] = useState({
     email: "",
@@ -39,7 +39,6 @@ function ForgotScreen({ navigation, route }) {
 
   ////////////////    Input handler   ////////////////////////////
   function handleInput(name, input) {
-    console.log(name, input);
     setData((prevState) => ({ ...prevState, [name]: input }));
   }
 

@@ -100,6 +100,7 @@ function Root() {
           console.log(response.data, "this is our data");
         })
         .catch((error) => {
+          console.log(error);
           authCtx.logout();
         });
 
