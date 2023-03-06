@@ -83,13 +83,13 @@ function Root() {
   useEffect(() => {
     async function fetchToken() {
       // const date = new Date().toLocaleString("en-US", {
-      //   timeZone: "Asia/calcutta",
+      //   timeZone: "Asia/karachi",
       // });
       // console.log(date);
       const storedToken = await AsyncStorage.getItem("token");
       console.log("storedToken", storedToken);
       await axios
-        .get("http://192.168.1.124:8000/api/users/tokenVarify", {
+        .get("http://192.168.1.124:8000/api/users/tokenVerify", {
           headers: {
             Authorization: `Bearer ${storedToken}`,
           },

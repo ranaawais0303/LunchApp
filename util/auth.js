@@ -19,7 +19,7 @@ export function createUser({ firstName, lastName, email, password }) {
 
 ////////////varify user with otp
 export async function varifyUser({ email, otp }) {
-  const url = `${BACKEND_URL}/signup/varify`;
+  const url = `${BACKEND_URL}/signup/verify`;
 
   const res = await axios.post(url, {
     email: email,
