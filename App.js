@@ -14,6 +14,7 @@ import IconButton from "./components/UI/IconButton";
 import ForgotScreen from "./screens/ForgotScreen";
 import ChangePasswordScreen from "./screens/ChangePasswordScreen";
 import axios from "axios";
+import Users from "./screens/Users";
 
 const Stack = createNativeStackNavigator();
 
@@ -45,7 +46,7 @@ function AuthenticatedStack() {
         contentStyle: { backgroundColor: Colors.primary100 },
       }}
     >
-      {!authCtx.isForgot && (
+      {!authCtx.isForgot && [
         <Stack.Screen
           name="Welcome"
           component={WelcomeScreen}
@@ -59,8 +60,14 @@ function AuthenticatedStack() {
               />
             ),
           }}
-        />
-      )}
+        />,
+        <Stack.Screen name="Users" component={Users} />,
+        // (
+        //   <Stack.Screen name="Menu" />
+        // )(<Stack.Screen name="User Verification" />)(
+        //   <Stack.Screen name="Orders" />
+        // )(<Stack.Screen name="Notifications" />)(<Stack.Screen name="User" />),
+      ]}
       {authCtx.isForgot && (
         <Stack.Screen name="changePassword" component={ChangePasswordScreen} />
       )}

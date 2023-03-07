@@ -1,14 +1,22 @@
-import { StyleSheet, Text, View, Pressable, FlatList } from "react-native";
+import { StyleSheet, FlatList } from "react-native";
 import GridTile from "../components/UI/GridTile";
+import { getAllUsers } from "../util/auth";
 
-function WelcomeScreen({ item }) {
-  function pressHandler() {
-    console.log("pressHandler for grid");
+function WelcomeScreen({ navigation }) {
+  function renderList(itemData) {
+    function pressHandler() {
+      // getAllUsers().then((res) => console.log(res.data));
+      navigation.navigate(itemData.item.name);
+    }
+    {
+      return <GridTile item={itemData.item.name} onPress={pressHandler} />;
+    }
   }
+
   const list = [
     {
       id: 1,
-      name: "user",
+      name: "Users",
     },
     {
       id: 2,
@@ -20,24 +28,21 @@ function WelcomeScreen({ item }) {
     },
     {
       id: 4,
-      name: "orders",
+      name: "Orders",
     },
     {
       id: 5,
-      name: "addons",
+      name: "Addons",
     },
     {
       id: 6,
-      name: "notifications",
+      name: "Notifications",
     },
   ];
   return (
-    // <View style={styles.container}>
     <FlatList
       data={list}
-      renderItem={({ item }) => (
-        <GridTile item={item.name} onPress={pressHandler} />
-      )}
+      renderItem={renderList}
       keyExtractor={(item) => item.id}
       numColumns={2}
     />

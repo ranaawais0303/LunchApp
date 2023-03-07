@@ -61,3 +61,18 @@ export async function changePassword({ email, password }) {
   });
   return res;
 }
+
+export async function getAllUsers() {
+  const url = BACKEND_URL;
+  const res = await axios.get(url);
+  console.log(res.data.data, "this is my get all users");
+  return res.data;
+}
+export async function deleteUser({ id }) {
+  console.log("id in auth", id);
+  const url = BACKEND_URL;
+  const res = await axios.delete(url, {
+    data: { id },
+  });
+  return res;
+}
