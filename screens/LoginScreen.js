@@ -1,10 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { login } from "../util/auth";
 import { Alert, StyleSheet, View } from "react-native";
 import Input from "../components/Auth/Input";
 import FlatButton from "../components/UI/FlatButton";
 import Button from "../components/UI/Button";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import StarterContainer from "../components/UI/StarterContainer";
 import { useAuth } from "../store/auth-context";
@@ -12,7 +11,6 @@ import { useAuth } from "../store/auth-context";
 /////////////////////////////////////////////////////////////////////
 function LoginScreen({ navigation }) {
   ///////////////////   Set States    /////////////////////////
-  const [token, setToken] = useState("");
 
   const [data, setData] = useState({
     email: "",
@@ -70,9 +68,6 @@ function LoginScreen({ navigation }) {
       password: data.password,
     })
       .then((res) => {
-        setToken(res.data.token);
-
-        console.log(res.data);
         authCtx.authenticate(res.data.token);
         if (res.data.user.forgot === true) {
           console.log("now there is a forgot");
@@ -87,7 +82,6 @@ function LoginScreen({ navigation }) {
         if (err.message.split(" ").pop() === "422") {
           Alert.alert(err.message, "Please varify your account");
         }
-        console.log(err);
         setIsAuthenticating(false);
       });
   }

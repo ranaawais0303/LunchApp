@@ -69,10 +69,27 @@ export async function getAllUsers() {
   return res.data;
 }
 export async function deleteUser({ id }) {
-  console.log("id in auth", id);
   const url = BACKEND_URL;
   const res = await axios.delete(url, {
     data: { id },
   });
   return res;
+}
+
+export async function updateUser({
+  id,
+  firstName,
+  lastName,
+  tokenExp,
+  isActive,
+}) {
+  const url = BACKEND_URL;
+  const res = await axios.patch(url, {
+    id: id,
+    firstName: firstName,
+    lastName: lastName,
+    tokenExp: tokenExp + "s",
+    isActive: isActive,
+  });
+  return res.data;
 }

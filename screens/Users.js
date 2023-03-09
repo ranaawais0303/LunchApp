@@ -20,6 +20,9 @@ function Users(props) {
   const [showEdit, setShowEdit] = useState(false);
   const [user, setUser] = useState();
 
+  function editHandler(val) {
+    setShowEdit(val);
+  }
   function updateHandler(myUser) {
     console.log("update Handler");
     setUser(myUser);
@@ -43,9 +46,8 @@ function Users(props) {
             .then((res) => {
               Alert.alert("data deleted successfully");
               getUsers();
-              console.log(res);
             })
-            .catch(console.log("no data"));
+            .catch((err) => console.log(err));
         },
       },
     ]);
@@ -53,14 +55,13 @@ function Users(props) {
   async function getUsers() {
     await getAllUsers()
       .then((res) => setList(res.data))
-      .catch(console.log("no data"));
+      .catch((err) => console.log("no data", err));
   }
   useEffect(() => {
     getUsers();
   }, []);
 
   function MyList(itemData) {
-    console.log(itemData.item, "this is the item data");
     return (
       <SafeAreaView>
         <Grid>
@@ -113,7 +114,7 @@ function Users(props) {
             numColumns={1}
           />
         </StarterContainer>,
-        showEdit && <EditModal user={user} />,
+        showEdit && <EditModal user={user} onPress={editHandler} />,
       ]}
     </>
   );
