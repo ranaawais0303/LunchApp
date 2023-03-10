@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal, View } from "react-native";
+import { Modal, View, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Input from "../Auth/Input";
 import StarterContainer from "./StarterContainer";
@@ -88,9 +88,9 @@ function EditModal({ user, onPress }) {
             }}
           />
           <Input
-            onUpdateValue={handleInput.bind(null, "lastName")}
             label="lastName"
             value={data.lastName}
+            onUpdateValue={handleInput.bind(null, "lastName")}
             error={errors.lastName}
             onFocus={() => {
               handleError(null, "lastName");
@@ -106,6 +106,7 @@ function EditModal({ user, onPress }) {
             }}
             keyboardType="numeric"
           />
+          <Text style={{ color: "white" }}>Is Active</Text>
           <Picker
             selectedValue={selectedValue}
             style={{
@@ -121,7 +122,13 @@ function EditModal({ user, onPress }) {
             <Picker.Item label="true" value="true" />
             <Picker.Item label="false" value="false" />
           </Picker>
-          <View style={{ flexDirection: "row", justifyContent: "center" }}>
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "center",
+              marginTop: 20,
+            }}
+          >
             <View style={{ paddingRight: 20 }}>
               <Button onPress={cancelHandler}>Cancel</Button>
             </View>

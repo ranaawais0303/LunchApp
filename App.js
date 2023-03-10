@@ -104,7 +104,7 @@ function Root() {
         .then((response) => {
           authCtx.authenticate(storedToken);
 
-          console.log(response.data, "this is our data");
+          console.log(response.data, "this is our data of token verify");
         })
         .catch((error) => {
           console.log(error);
