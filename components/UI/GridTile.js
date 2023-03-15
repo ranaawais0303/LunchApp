@@ -19,7 +19,7 @@ function GridTile({ onPress, item }) {
             { backgroundColor: Colors.primary800 },
           ]}
         >
-          <Text style={styles.title}>{item}</Text>
+          <Text style={[styles.title, { color: "white" }]}>{item}</Text>
         </View>
       </Pressable>
     </View>

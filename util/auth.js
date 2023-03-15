@@ -93,3 +93,9 @@ export async function updateUser({
   });
   return res.data;
 }
+export async function getList(role) {
+  const url = `${BACKEND_URL}/getList`;
+  const res = await axios.post(url, { role: role });
+  console.log(res.data, "auth list res");
+  return res.data;
+}

@@ -69,6 +69,7 @@ function LoginScreen({ navigation }) {
     })
       .then((res) => {
         authCtx.authenticate(res.data.token);
+        authCtx.role(res.data.user.role);
         if (res.data.user.forgot === true) {
           console.log("now there is a forgot");
           authCtx.addForgot(data.email);

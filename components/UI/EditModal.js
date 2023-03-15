@@ -10,7 +10,7 @@ function EditModal({ user, onPress }) {
   const [data, setData] = useState({
     firstName: user.firstName,
     lastName: user.lastName,
-    tokenExp: user.tokenExp,
+    tokenExp: user.tokenExp.slice(0, -1),
   });
   const [errors, setErrors] = useState({});
   const [selectedValue, setSelectedValue] = useState(user.isActive);

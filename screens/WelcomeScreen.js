@@ -1,49 +1,50 @@
 import { StyleSheet, FlatList } from "react-native";
 import GridTile from "../components/UI/GridTile";
-import { getAllUsers } from "../util/auth";
+import { getList } from "../util/auth";
+import { useAuth } from "../store/auth-context";
+import { useEffect, useState } from "react";
 
 function WelcomeScreen({ navigation }) {
+  const [list, setList] = useState();
+  const authCtx = useAuth();
+
+  const role = authCtx.getRole;
+
+  ///////////////////////// Get Role base List from backend  /////////
+  function getListForRole(roles) {
+    getList(role).then((res) => {
+      setList(res.data);
+    });
+  }
+
+  //////////////// Render list first when this page load //////////////
+  useEffect(() => {
+    getListForRole(role);
+  }, []);
+
   function renderList(itemData) {
     function pressHandler() {
-      // getAllUsers().then((res) => console.log(res.data));
-      navigation.navigate(itemData.item.name);
+      navigation.navigate(
+        itemData.item.name,
+        (setOptions = { id: itemData.item._id })
+      );
     }
     {
-      return <GridTile item={itemData.item.name} onPress={pressHandler} />;
+      return (
+        <GridTile
+          item={itemData.item.name}
+          onPress={pressHandler}
+          key={itemData.item._id}
+        />
+      );
     }
   }
 
-  const list = [
-    {
-      id: 1,
-      name: "Users",
-    },
-    {
-      id: 2,
-      name: "Menu",
-    },
-    {
-      id: 3,
-      name: "User Verification",
-    },
-    {
-      id: 4,
-      name: "Orders",
-    },
-    {
-      id: 5,
-      name: "Addons",
-    },
-    {
-      id: 6,
-      name: "Notifications",
-    },
-  ];
   return (
     <FlatList
       data={list}
       renderItem={renderList}
-      keyExtractor={(item) => item.id}
+      keyExtractor={(item) => item._id}
       numColumns={2}
     />
   );

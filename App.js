@@ -124,7 +124,7 @@ function Root() {
     }
     fetchForgot();
     fetchToken();
-  });
+  }, []);
   if (isTryingLogin) {
     return <AppLoading />;
   }

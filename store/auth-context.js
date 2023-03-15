@@ -6,6 +6,7 @@ const AuthContext = createContext();
 function AuthContextProvider({ children }) {
   const [authToken, setAuthToken] = useState();
   const [forgot, setForgot] = useState();
+  const [role, setRole] = useState();
 
   function authenticate(token) {
     AsyncStorage.setItem("token", token);
@@ -14,6 +15,7 @@ function AuthContextProvider({ children }) {
   function logout() {
     setAuthToken(null);
     AsyncStorage.removeItem("token");
+    AsyncStorage.removeItem("role");
   }
   function addForgot(forgot) {
     setForgot(forgot);
@@ -23,7 +25,13 @@ function AuthContextProvider({ children }) {
     setForgot(null);
     AsyncStorage.removeItem("forgot");
   }
+  function setUserRole(role) {
+    AsyncStorage.setItem("role", role);
+    setRole(role);
+  }
   const value = {
+    role: setUserRole,
+    getRole: role,
     token: authToken,
     // !!conver into boolean give the same result as token if token then true if not then false.
     isAuthenticated: !!authToken,
