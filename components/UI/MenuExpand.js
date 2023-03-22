@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import {
-  Icon,
-  ListItem,
-  Card,
-  Button,
-  PricingCard,
-  lightColors,
-} from "@rneui/themed";
-import { View, Text, ScrollView } from "react-native";
+import { Icon, ListItem } from "@rneui/themed";
+import SelectDropdown from "react-native-select-dropdown";
 import { Colors } from "../../constants/styles";
 import ContainerForMenus from "./ContainerForMenus";
-import StarterContainer from "./StarterContainer";
+import Dropdown from "./Dropdown";
 
 function MenuExpand({ itemData }) {
   const [expanded, setExpanded] = useState(false);
@@ -28,11 +21,8 @@ function MenuExpand({ itemData }) {
           <Icon name="chevron-down" type="material-community" color="white" />
         }
         containerStyle={{ backgroundColor: Colors.primary800 }}
-        // rightIcon={<Icon color="white" />}
-
         content={
           <>
-            {/* <Icon name="place" size={20} color="white" /> */}
             <ListItem.Content>
               <ListItem.Title style={{ color: "white" }}>
                 {itemData.item.name}
@@ -43,6 +33,7 @@ function MenuExpand({ itemData }) {
         isExpanded={expanded}
         onPress={onPressHandler.bind(this, itemData.item._id)}
       >
+        <Dropdown />
         <ContainerForMenus
           name="Name"
           price="Price"

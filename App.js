@@ -63,7 +63,15 @@ function AuthenticatedStack() {
           }}
         />,
         <Stack.Screen name="Users" component={Users} />,
-        <Stack.Screen name="Menus" component={Menus} />,
+        <Stack.Screen
+          name="Menus"
+          component={Menus}
+          options={{
+            headerRight: ({ tintColor }) => (
+              <IconButton icon="add" size={24} color={tintColor} />
+            ),
+          }}
+        />,
         // (
         // )(<Stack.Screen name="User Verification" />)(
         //   <Stack.Screen name="Orders" />
