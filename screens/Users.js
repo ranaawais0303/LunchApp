@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import IconButton from "../components/UI/IconButton";
-import { Colors } from "../constants/styles";
 import { deleteUser, getAllUsers } from "../util/auth";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import StarterContainer from "../components/UI/StarterContainer";
@@ -105,7 +104,7 @@ function Users(props) {
       {!showEdit}
       {!list && <LoadingOverlay />}
       {list && [
-        <StarterContainer>
+        <StarterContainer style={{ marginHorizontal: 5 }}>
           <FlatList
             style={styles.com}
             data={list}

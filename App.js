@@ -15,6 +15,7 @@ import ForgotScreen from "./screens/ForgotScreen";
 import ChangePasswordScreen from "./screens/ChangePasswordScreen";
 import axios from "axios";
 import Users from "./screens/Users";
+import Menus from "./screens/Menus";
 
 const Stack = createNativeStackNavigator();
 
@@ -62,8 +63,8 @@ function AuthenticatedStack() {
           }}
         />,
         <Stack.Screen name="Users" component={Users} />,
+        <Stack.Screen name="Menus" component={Menus} />,
         // (
-        //   <Stack.Screen name="Menu" />
         // )(<Stack.Screen name="User Verification" />)(
         //   <Stack.Screen name="Orders" />
         // )(<Stack.Screen name="Notifications" />)(<Stack.Screen name="User" />),

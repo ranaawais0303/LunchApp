@@ -1,16 +1,16 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { Colors } from "../../constants/styles";
-function StarterContainer({ children }) {
-  return <View style={styles.container}>{children}</View>;
+function StarterContainer({ children, style }) {
+  return <View style={[styles.container, style]}>{children}</View>;
 }
 
 export default StarterContainer;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 64,
-    marginHorizontal: 32,
+    marginTop: 64, //64
+    marginHorizontal: 32, //32
     padding: 16,
     borderRadius: 8,
     backgroundColor: Colors.primary800,
