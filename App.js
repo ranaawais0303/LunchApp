@@ -16,6 +16,7 @@ import ChangePasswordScreen from "./screens/ChangePasswordScreen";
 import axios from "axios";
 import Users from "./screens/Users";
 import Menus from "./screens/Menus";
+import MenuContextProvider from "./store/menu-context";
 
 const Stack = createNativeStackNavigator();
 
@@ -145,7 +146,9 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <AuthContextProvider>
-        <Root />
+        <MenuContextProvider>
+          <Root />
+        </MenuContextProvider>
       </AuthContextProvider>
     </>
   );

@@ -3,15 +3,17 @@ import { Icon } from "@rneui/themed";
 import SelectDropdown from "react-native-select-dropdown";
 import { Colors } from "../../constants/styles";
 
-function Dropdown(props) {
+function Dropdown({ id }) {
   const countries = ["Egypt", "Canada", "Australia", "Ireland"];
-
+  console.log(id, "id");
+  function onSelectHandler(selectedItem, index) {
+    console.log(selectedItem, index);
+    // return "add item";
+  }
   return (
     <SelectDropdown
       data={countries}
-      onSelect={(selectedItem, index) => {
-        console.log(selectedItem, index);
-      }}
+      onSelect={onSelectHandler}
       buttonStyle={{
         backgroundColor: Colors.primary800,
         margin: 10,
@@ -21,11 +23,12 @@ function Dropdown(props) {
       renderDropdownIcon={() => <Icon name="add" size={20} color="white" />}
       dropdownStyle={{ color: "white" }}
       buttonTextAfterSelection={(selectedItem, index) => {
-        return "Add item ";
+        return "Add Item";
       }}
       rowTextForSelection={(item, index) => {
         return item;
       }}
+      defaultButtonText="Add Item"
     />
   );
 }

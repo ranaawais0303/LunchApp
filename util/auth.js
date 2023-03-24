@@ -109,7 +109,6 @@ export async function updateUser({
 export async function getList(role) {
   const url = `${BACKEND_URL}/getList`;
   const res = await axios.post(url, { role: role });
-  console.log(res.data, "auth list res");
   return res.data;
 }
 
@@ -117,6 +116,12 @@ export async function getList(role) {
 export async function getAllMenus() {
   const url = `${BACKEND_URL2}/getMenus`;
   const res = await axios.get(url);
-  console.log(res.data.data, "data");
   return res.data;
+}
+
+///////  Current menu    ///////////////////
+export async function currentval({ id }) {
+  const url = `${BACKEND_URL2}/updateCurr`;
+  const res = await axios.put(url, { id: id });
+  return res.data.data;
 }

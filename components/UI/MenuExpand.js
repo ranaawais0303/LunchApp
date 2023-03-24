@@ -1,17 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Icon, ListItem } from "@rneui/themed";
-import SelectDropdown from "react-native-select-dropdown";
 import { Colors } from "../../constants/styles";
 import ContainerForMenus from "./ContainerForMenus";
 import Dropdown from "./Dropdown";
 
-function MenuExpand({ itemData }) {
+function MenuExpand({ itemData, checkhandle }) {
   const [expanded, setExpanded] = useState(false);
-  function onPressHandler(id) {
+  function onPressHandler() {
     setExpanded(!expanded);
   }
-  function pressHandler() {
-    console.log("handle this");
+
+  function checkboxHandler() {
+    checkhandle(itemData.item._id, itemData.item.current);
   }
 
   return (
@@ -23,6 +23,10 @@ function MenuExpand({ itemData }) {
         containerStyle={{ backgroundColor: Colors.primary800 }}
         content={
           <>
+            <ListItem.CheckBox
+              checked={itemData.item.current}
+              onPress={checkboxHandler}
+            ></ListItem.CheckBox>
             <ListItem.Content>
               <ListItem.Title style={{ color: "white" }}>
                 {itemData.item.name}
@@ -33,7 +37,7 @@ function MenuExpand({ itemData }) {
         isExpanded={expanded}
         onPress={onPressHandler.bind(this, itemData.item._id)}
       >
-        <Dropdown />
+        <Dropdown id={itemData.item._id} />
         <ContainerForMenus
           name="Name"
           price="Price"
