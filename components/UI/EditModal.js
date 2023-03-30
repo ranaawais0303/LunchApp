@@ -3,8 +3,8 @@ import { Modal, View, Text } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import Input from "../Auth/Input";
 import StarterContainer from "./StarterContainer";
+import { useUpdateUserMutation } from "../../util/userSlice";
 import Button from "./Button";
-import { updateUser } from "../../util/auth";
 import { Colors } from "../../constants/styles";
 function EditModal({ user, onPress }) {
   const [data, setData] = useState({
@@ -12,6 +12,10 @@ function EditModal({ user, onPress }) {
     lastName: user.lastName,
     tokenExp: user.tokenExp.slice(0, -1),
   });
+  console.log("user inside the edit modal", user._id);
+
+  // update user from user slice
+  const [updateUser, { isLoading, error, isSuccess }] = useUpdateUserMutation();
   const [errors, setErrors] = useState({});
   const [selectedValue, setSelectedValue] = useState(user.isActive);
 
@@ -52,21 +56,14 @@ function EditModal({ user, onPress }) {
     }
   }
   ///////////////////Here is the update user api use///////
-  function editUser() {
-    updateUser({
-      id: user._id,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      tokenExp: data.tokenExp,
-      isActive: selectedValue,
-    })
-      .then((res) => {
-        console.log(res, "in Edit modal");
-        onPress(false);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+  async function editUser() {
+    const UpdatedUserData = data;
+    const userId = user._id;
+    const response = await updateUser({ userId, UpdatedUserData });
+    if (!response) {
+      return <Text>{error}</Text>;
+    }
+    console.log("here is response inside the edit modal", response);
   }
   return (
     <Modal transparent={true} animationType="none" visible={true}>

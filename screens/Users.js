@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-
+import { useGetUsersQuery } from "../util/userSlice";
 import {
   View,
   StyleSheet,
@@ -15,9 +15,57 @@ import LoadingOverlay from "../components/UI/LoadingOverlay";
 import StarterContainer from "../components/UI/StarterContainer";
 import EditModal from "../components/UI/EditModal";
 function Users(props) {
-  const [list, setList] = useState();
   const [showEdit, setShowEdit] = useState(false);
   const [user, setUser] = useState();
+
+  //////////    redux toolkit query implementation  //////////
+  const {
+    data: users,
+    isLoading,
+    isSuccess,
+    isError,
+    isFetching,
+    error,
+  } = useGetUsersQuery();
+
+  let content;
+  if (isLoading) {
+    content = <LoadingOverlay />;
+  } else if (isError) {
+    content = <Text>{error}</Text>;
+  } else if (isSuccess) {
+    console.log("my users", JSON.stringify(users.data));
+
+    // setList(JSON.stringify(users.data));
+    content = (
+      <>
+        {!showEdit}
+        {[
+          <StarterContainer style={{ marginHorizontal: 5 }}>
+            <FlatList
+              style={styles.com}
+              data={users.data}
+              renderItem={MyList}
+              keyExtractor={(item) => item._id}
+              numColumns={1}
+            />
+          </StarterContainer>,
+          showEdit && (
+            <EditModal
+              user={user}
+              onPress={editHandler}
+              success={isSuccess}
+              isError={isError}
+              error={error}
+            />
+          ),
+        ]}
+      </>
+    );
+    // users.data.map((user) => <Text>{user.firstName}</Text>);
+  } else if (isFetching) {
+    <LoadingOverlay />;
+  }
 
   function editHandler(val) {
     setShowEdit(val);
@@ -101,9 +149,11 @@ function Users(props) {
   }
   return (
     <>
-      {!showEdit}
-      {!list && <LoadingOverlay />}
-      {list && [
+      {content}
+
+      {/* {!showEdit}
+      {/* {!list && <LoadingOverlay />} */}
+      {/* {list && [
         <StarterContainer style={{ marginHorizontal: 5 }}>
           <FlatList
             style={styles.com}
@@ -114,7 +164,8 @@ function Users(props) {
           />
         </StarterContainer>,
         showEdit && <EditModal user={user} onPress={editHandler} />,
-      ]}
+      ]}{" "}
+      */}
     </>
   );
 }

@@ -11,7 +11,7 @@ function MenuExpand({ itemData, checkhandle }) {
   }
 
   function checkboxHandler() {
-    checkhandle(itemData.item._id, itemData.item.current);
+    checkhandle(itemData.item._id);
   }
 
   return (

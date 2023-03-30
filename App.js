@@ -1,6 +1,6 @@
 // import { NavigationContainer } from "@react-navigation/native";
 import { useState, useEffect } from "react";
-import { NavigationContainer, useNavigation } from "@react-navigation/native";
+import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { StatusBar } from "expo-status-bar";
 import LoginScreen from "./screens/LoginScreen";
@@ -17,6 +17,8 @@ import axios from "axios";
 import Users from "./screens/Users";
 import Menus from "./screens/Menus";
 import MenuContextProvider from "./store/menu-context";
+import { ApiProvider } from "@reduxjs/toolkit/dist/query/react";
+import { userSlice } from "./util/userSlice";
 
 const Stack = createNativeStackNavigator();
 
@@ -147,7 +149,9 @@ export default function App() {
       <StatusBar style="light" />
       <AuthContextProvider>
         <MenuContextProvider>
-          <Root />
+          <ApiProvider api={userSlice}>
+            <Root />
+          </ApiProvider>
         </MenuContextProvider>
       </AuthContextProvider>
     </>
