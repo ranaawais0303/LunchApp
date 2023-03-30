@@ -13,7 +13,6 @@ export const userSlice = createApi({
     }),
     updateUser: builder.mutation({
       query: ({ userId, UpdatedUserData }) => {
-        console.log("____________Query user++++++++++++++", UpdatedUserData);
         return {
           url: `/${userId}`,
           method: "PATCH",
@@ -22,7 +21,18 @@ export const userSlice = createApi({
       },
       invalidatesTags: ["Users"],
     }),
+    deleteUserData: builder.mutation({
+      query: (userId) => ({
+        url: `/${userId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Users"],
+    }),
   }),
 });
 
-export const { useGetUsersQuery, useUpdateUserMutation } = userSlice;
+export const {
+  useGetUsersQuery,
+  useUpdateUserMutation,
+  useDeleteUserDataMutation,
+} = userSlice;

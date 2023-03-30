@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useGetUsersQuery } from "../util/userSlice";
+import { useGetUsersQuery, useDeleteUserDataMutation } from "../util/userSlice";
 import {
   View,
   StyleSheet,
@@ -27,6 +27,7 @@ function Users(props) {
     isFetching,
     error,
   } = useGetUsersQuery();
+  const [deleteUserData, {}] = useDeleteUserDataMutation();
 
   let content;
   if (isLoading) {
@@ -86,13 +87,15 @@ function Users(props) {
       },
       {
         text: "OK",
-        onPress: () => {
-          deleteUser({
-            id: id,
-          })
+        onPress: async () => {
+          // deleteUser({
+          //   id: id,
+          // })
+          await deleteUserData(id)
             .then((res) => {
               Alert.alert("data deleted successfully");
-              getUsers();
+              console.log(res, "this is delete user response");
+              // getUsers();
             })
             .catch((err) => console.log(err));
         },
