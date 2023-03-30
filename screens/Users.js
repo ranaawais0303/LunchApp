@@ -10,7 +10,6 @@ import {
 } from "react-native";
 import { Col, Row, Grid } from "react-native-easy-grid";
 import IconButton from "../components/UI/IconButton";
-import { deleteUser, getAllUsers } from "../util/auth";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import StarterContainer from "../components/UI/StarterContainer";
 import EditModal from "../components/UI/EditModal";
@@ -35,9 +34,6 @@ function Users(props) {
   } else if (isError) {
     content = <Text>{error}</Text>;
   } else if (isSuccess) {
-    console.log("my users", JSON.stringify(users.data));
-
-    // setList(JSON.stringify(users.data));
     content = (
       <>
         {!showEdit}
@@ -63,7 +59,6 @@ function Users(props) {
         ]}
       </>
     );
-    // users.data.map((user) => <Text>{user.firstName}</Text>);
   } else if (isFetching) {
     <LoadingOverlay />;
   }
@@ -94,22 +89,12 @@ function Users(props) {
           await deleteUserData(id)
             .then((res) => {
               Alert.alert("data deleted successfully");
-              console.log(res, "this is delete user response");
-              // getUsers();
             })
             .catch((err) => console.log(err));
         },
       },
     ]);
   }
-  async function getUsers() {
-    await getAllUsers()
-      .then((res) => setList(res.data))
-      .catch((err) => console.log("no data", err));
-  }
-  useEffect(() => {
-    getUsers();
-  }, []);
 
   function MyList(itemData) {
     return (
