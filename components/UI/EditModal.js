@@ -6,16 +6,17 @@ import StarterContainer from "./StarterContainer";
 import { useUpdateUserMutation } from "../../util/userSlice";
 import Button from "./Button";
 import { Colors } from "../../constants/styles";
+import LoadingOverlay from "./LoadingOverlay";
 function EditModal({ user, onPress }) {
   const [data, setData] = useState({
     firstName: user.firstName,
     lastName: user.lastName,
     tokenExp: user.tokenExp.slice(0, -1),
   });
-  console.log("user inside the edit modal", user._id);
 
   // update user from user slice
-  const [updateUser, { isLoading, error, isSuccess }] = useUpdateUserMutation();
+  const [updateUser, { isLoading, error, isSuccess, isError }] =
+    useUpdateUserMutation();
   const [errors, setErrors] = useState({});
   const [selectedValue, setSelectedValue] = useState(user.isActive);
 
@@ -57,13 +58,25 @@ function EditModal({ user, onPress }) {
   }
   ///////////////////Here is the update user api use///////
   async function editUser() {
-    const UpdatedUserData = data;
+    const UpdatedUserData = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      tokenExp: data.tokenExp,
+      isActive: selectedValue,
+    };
+
     const userId = user._id;
+
     const response = await updateUser({ userId, UpdatedUserData });
-    if (!response) {
-      return <Text>{error}</Text>;
-    }
+
     console.log("here is response inside the edit modal", response);
+  }
+  if (isLoading) {
+    return <LoadingOverlay />;
+  } else if (isSuccess) {
+    onPress(false);
+  } else if (isError) {
+    return <Text>{error}</Text>;
   }
   return (
     <Modal transparent={true} animationType="none" visible={true}>

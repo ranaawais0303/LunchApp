@@ -17,8 +17,8 @@ import axios from "axios";
 import Users from "./screens/Users";
 import Menus from "./screens/Menus";
 import MenuContextProvider from "./store/menu-context";
-import { ApiProvider } from "@reduxjs/toolkit/dist/query/react";
-import { userSlice } from "./util/userSlice";
+import { Provider } from "react-redux";
+import { store } from "./util/store";
 
 const Stack = createNativeStackNavigator();
 
@@ -149,9 +149,11 @@ export default function App() {
       <StatusBar style="light" />
       <AuthContextProvider>
         <MenuContextProvider>
-          <ApiProvider api={userSlice}>
+          <Provider store={store}>
+            {/* <ApiProvider api={[userSlice, menuSlice]}> */}
             <Root />
-          </ApiProvider>
+            {/* </ApiProvider> */}
+          </Provider>
         </MenuContextProvider>
       </AuthContextProvider>
     </>

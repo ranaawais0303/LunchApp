@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const userSlice = createApi({
-  reducerPath: "api",
+  reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://192.168.1.124:8000/api/users",
   }),
@@ -16,7 +16,12 @@ export const userSlice = createApi({
         return {
           url: `/${userId}`,
           method: "PATCH",
-          body: UpdatedUserData,
+          body: {
+            firstName: UpdatedUserData.firstName,
+            lastName: UpdatedUserData.lastName,
+            tokenExpiry: UpdatedUserData.tokenExpiry + "s",
+            isActive: UpdatedUserData.isActive,
+          },
         };
       },
       invalidatesTags: ["Users"],
@@ -36,3 +41,5 @@ export const {
   useUpdateUserMutation,
   useDeleteUserDataMutation,
 } = userSlice;
+
+export const userReducer = userSlice.reducer;
