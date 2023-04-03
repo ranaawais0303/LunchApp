@@ -11,6 +11,10 @@ export const menuSlice = createApi({
       query: () => "/getMenus",
       providesTags: ["Menus"],
     }),
+    getAllItems: builder.query({
+      query: () => "/getItems",
+      invalidatesTags: ["Menus"],
+    }),
     updateMenu: builder.mutation({
       query: ({ menuId, UpdatedmenuData }) => {
         return {
@@ -28,6 +32,7 @@ export const menuSlice = createApi({
       }),
       invalidatesTags: ["Menus"],
     }),
+
     updateCurrent: builder.mutation({
       query: (menuId) => {
         console.log("here is update current from slice method", menuId);
@@ -41,13 +46,9 @@ export const menuSlice = createApi({
   }),
 });
 
-// export const {
-//   useGetMenusQuery,
-//   useUpdateMenuMutation,
-//   useDeleteMenuDataMutation,
-// } = menuSlice;
 export const {
   useGetMenusQuery,
+  useGetAllItemsQuery,
   useUpdateMenuMutation,
   useDeleteMenuDataMutation,
   useUpdateCurrentMutation,

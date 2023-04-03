@@ -6,6 +6,7 @@ import Dropdown from "./Dropdown";
 
 function MenuExpand({ itemData, checkhandle }) {
   const [expanded, setExpanded] = useState(false);
+
   function onPressHandler() {
     setExpanded(!expanded);
   }
@@ -28,7 +29,7 @@ function MenuExpand({ itemData, checkhandle }) {
               onPress={checkboxHandler}
             ></ListItem.CheckBox>
             <ListItem.Content>
-              <ListItem.Title style={{ color: "white" }}>
+              <ListItem.Title style={{ color: "white", marginLeft: 10 }}>
                 {itemData.item.name}
               </ListItem.Title>
             </ListItem.Content>
@@ -37,7 +38,7 @@ function MenuExpand({ itemData, checkhandle }) {
         isExpanded={expanded}
         onPress={onPressHandler.bind(this, itemData.item._id)}
       >
-        <Dropdown id={itemData.item._id} />
+        <Dropdown id={itemData.item._id} items={itemData.item.items} />
         <ContainerForMenus
           name="Name"
           price="Price"
