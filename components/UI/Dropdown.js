@@ -8,16 +8,11 @@ import {
 } from "../../util/menuSlice";
 import LoadingOverlay from "./LoadingOverlay";
 
-function Dropdown({ id, items }) {
+function Dropdown({ id, items, addItemIdIntoNewMenu }) {
+  //////////////////////// add item into menu mutation   /////////////
   const [addItemIntoMenu, {}] = useAddItemIntoMenuMutation();
-  function onSelectHandler(selectedItem, index) {
-    const itemId = selectedItem[selectedItem.length - 1];
-    addItemIntoMenu({ menuId: id, itemId })
-      .then((res) => console.log("success", res))
-      .catch((err) => console.log("here is an error", err));
-    console.log(selectedItem, index);
-    // return "add item";
-  }
+
+  ////////////// get all item Query //////////////////
   const {
     data: allitems,
     isLoading,
@@ -25,13 +20,32 @@ function Dropdown({ id, items }) {
     isError,
     error,
   } = useGetAllItemsQuery();
+  function onSelectHandler(selectedItem, index) {
+    const itemId = selectedItem[selectedItem.length - 1];
+    /////////////for add item into  menu  //////////
+    if (id) {
+      addItemIntoMenu({ menuId: id, itemId })
+        .then((res) => console.log("success", res))
+        .catch((err) => console.log("here is an error", err));
+    }
+    ////////////////////// for item into new menu  ////////
+    else {
+      addItemIdIntoNewMenu(itemId);
+    }
+    console.log(selectedItem, index);
+  }
 
+  ///////  change content according to data   ////////////
+  ////////// also set condition for new menu and add item ///
+  ///////// into old menu //////////////////////////////
   let content;
   if (isSuccess) {
     const data = allitems.data;
-    const filteredItems = data.filter(
-      (item) => !items.some((menuItem) => menuItem._id === item._id)
-    );
+    const filteredItems = id
+      ? data.filter(
+          (item) => !items.some((menuItem) => menuItem._id === item._id)
+        )
+      : data;
     const filteredNames = filteredItems.map((item) => item.name);
     const filteredIds = filteredItems.map((item) => item._id);
     content = (

@@ -3,9 +3,34 @@ import React, { useState } from "react";
 import { FlatList, View, Alert } from "react-native";
 import MenuExpand from "../components/UI/MenuExpand";
 import { useGetMenusQuery, useUpdateCurrentMutation } from "../util/menuSlice";
+import IconButton from "../components/UI/IconButton";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
-function Menus() {
+import AddMenu from "../components/UI/AddMenu";
+function Menus({ navigation }) {
+  navigation.setOptions({
+    headerRight: ({ tintColor }) => (
+      <IconButton
+        icon="add"
+        size={24}
+        color={tintColor}
+        onPress={openMenuModal}
+      />
+    ),
+  });
+
+  /////////////   stats    /////////////////////////
   const [load, setLoad] = useState(false);
+  const [openModal, setOpenModal] = useState(false);
+
+  ///////////////// open add menu modal   /////////////
+  function openMenuModal() {
+    setOpenModal(!openModal);
+  }
+  ///////////////// modal handle from add manu  /////////
+  function addMenuModalHandler(val) {
+    setOpenModal(val);
+  }
+  ///////////////////   get All Menus   ////////////////////
   const {
     data: menus,
     isLoading,
@@ -13,18 +38,23 @@ function Menus() {
     isError,
     error,
   } = useGetMenusQuery();
+
+  //////////////    update Current    ///////////////////////
   const [updateCurrent, {}] = useUpdateCurrentMutation();
   let content;
   if (isSuccess) {
-    console.log(JSON.stringify(menus.data), "these are my menus from slice");
     content = (
-      <FlatList
-        data={menus.data}
-        renderItem={renderList}
-        keyExtractor={(item) => item._id}
-        ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-      />
+      <>
+        <FlatList
+          data={menus.data}
+          renderItem={renderList}
+          keyExtractor={(item) => item._id}
+          ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+        />
+        {openModal && <AddMenu onPress={addMenuModalHandler} />}
+      </>
     );
+
     // setMenuName(menus.name);r
   } else if (isLoading) {
     content = <LoadingOverlay />;
@@ -32,12 +62,12 @@ function Menus() {
     content = <Text>{error}</Text>;
   }
 
+  ///////// load for check handler  /////////
   function checkHandler(id) {
     setLoad(true);
     updateCurrent(id)
       .then((res) => {
         setLoad(false);
-        console.log(res);
       })
       .catch((err) => console.log(err, "here is an erroer"));
   }
