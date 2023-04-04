@@ -43,6 +43,16 @@ export const menuSlice = createApi({
       },
       invalidatesTags: ["Menus"],
     }),
+    addItemIntoMenu: builder.mutation({
+      query: ({ menuId, itemId }) => {
+        return {
+          url: "/AddItemIntoMenu",
+          method: "POST",
+          body: { menuId, itemId },
+        };
+      },
+      invalidatesTags: ["Menus"],
+    }),
   }),
 });
 
@@ -52,5 +62,6 @@ export const {
   useUpdateMenuMutation,
   useDeleteMenuDataMutation,
   useUpdateCurrentMutation,
+  useAddItemIntoMenuMutation,
 } = menuSlice;
 export const menuReducer = menuSlice.reducer;

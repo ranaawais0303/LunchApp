@@ -2,39 +2,42 @@ import React from "react";
 import { Icon } from "@rneui/themed";
 import SelectDropdown from "react-native-select-dropdown";
 import { Colors } from "../../constants/styles";
-import { useGetAllItemsQuery } from "../../util/menuSlice";
+import {
+  useAddItemIntoMenuMutation,
+  useGetAllItemsQuery,
+} from "../../util/menuSlice";
 import LoadingOverlay from "./LoadingOverlay";
 
 function Dropdown({ id, items }) {
-  let countries = ["Egypt", "Canada", "Australia", "Ireland"];
-  console.log(id, "id");
+  const [addItemIntoMenu, {}] = useAddItemIntoMenuMutation();
   function onSelectHandler(selectedItem, index) {
+    const itemId = selectedItem[selectedItem.length - 1];
+    addItemIntoMenu({ menuId: id, itemId })
+      .then((res) => console.log("success", res))
+      .catch((err) => console.log("here is an error", err));
     console.log(selectedItem, index);
     // return "add item";
   }
-  console.log(items, "filtered items");
   const {
     data: allitems,
     isLoading,
     isSuccess,
     isError,
-    isFetching,
     error,
   } = useGetAllItemsQuery();
+
   let content;
   if (isSuccess) {
     const data = allitems.data;
-    console.log(allitems.data, "all items");
     const filteredItems = data.filter(
       (item) => !items.some((menuItem) => menuItem._id === item._id)
     );
-    const filteredName = filteredItems.map((item) => item.name);
-    const filteredId = filteredItems.map((item) => item._id);
-
+    const filteredNames = filteredItems.map((item) => item.name);
+    const filteredIds = filteredItems.map((item) => item._id);
     content = (
       <SelectDropdown
-        data={filteredName}
-        onSelect={onSelectHandler.bind(this, filteredId)}
+        data={filteredNames}
+        onSelect={onSelectHandler.bind(this, filteredIds)}
         buttonStyle={{
           backgroundColor: Colors.primary800,
           margin: 10,
