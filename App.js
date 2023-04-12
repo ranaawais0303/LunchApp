@@ -16,10 +16,10 @@ import ChangePasswordScreen from "./screens/ChangePasswordScreen";
 import axios from "axios";
 import Users from "./screens/Users";
 import Menus from "./screens/Menus";
-import MenuContextProvider from "./store/menu-context";
 import { Provider } from "react-redux";
 import { store } from "./util/store";
-import AddMenuModal from "./components/UI/AddMenu";
+import Menu from "./screens/Menu";
+import CartProvider from "./store/cart-context";
 
 const Stack = createNativeStackNavigator();
 
@@ -68,8 +68,7 @@ function AuthenticatedStack() {
         />,
         <Stack.Screen name="Users" component={Users} />,
         <Stack.Screen name="Menus" component={Menus} />,
-        // (
-        // )(<Stack.Screen name="User Verification" />)(
+        <Stack.Screen name="Menu" component={Menu} />,
         //   <Stack.Screen name="Orders" />
         // )(<Stack.Screen name="Notifications" />)(<Stack.Screen name="User" />),
       ]}
@@ -141,13 +140,13 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <AuthContextProvider>
-        <MenuContextProvider>
+        <CartProvider>
           <Provider store={store}>
             {/* <ApiProvider api={[userSlice, menuSlice]}> */}
             <Root />
             {/* </ApiProvider> */}
           </Provider>
-        </MenuContextProvider>
+        </CartProvider>
       </AuthContextProvider>
     </>
   );
