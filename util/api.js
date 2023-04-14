@@ -1,6 +1,7 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import { userSlice } from "./userSlice";
 import { menuSlice } from "./menuSlice";
+import { addonsSlice } from "./addonsSlice";
 
 // const rootReducer = combineReducers({
 //   users: userReducer,
@@ -9,5 +10,6 @@ import { menuSlice } from "./menuSlice";
 export const api = {
   users: userSlice,
   menus: menuSlice,
+  addons: addonsSlice,
 };
 // export default rootReducer;

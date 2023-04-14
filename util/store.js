@@ -9,7 +9,12 @@ export const store = configureStore({
 
     [api.users.reducerPath]: api.users.reducer,
     [api.menus.reducerPath]: api.menus.reducer,
+    [api.addons.reducerPath]: api.addons.reducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(api.users.middleware, api.menus.middleware),
+    getDefaultMiddleware().concat(
+      api.users.middleware,
+      api.menus.middleware,
+      api.addons.middleware
+    ),
 });

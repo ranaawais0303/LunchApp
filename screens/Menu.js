@@ -5,11 +5,18 @@ import { Badge } from "@rneui/base";
 import MenuCard from "../components/UI/MenuCard";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import IconButton from "../components/UI/IconButton";
+import Dropdown from "../components/UI/Dropdown";
 import { Colors } from "../constants/styles";
 import { useSelector } from "react-redux";
+import DropdownAddons from "../components/UI/DropdownAddons";
 function Menu({ navigation }) {
   const { totalAmount } = useSelector((store) => store.cart);
+  const [addons, setAddons] = useState();
 
+  function addonsData(item) {
+    console.log("____________", item, "____addonsdata______");
+    setAddons(item);
+  }
   navigation.setOptions({
     headerRight: ({ tintColor }) => (
       <View>
@@ -42,13 +49,15 @@ function Menu({ navigation }) {
     <Text>{error}</Text>;
   } else if (isSuccess) {
     const getActiveMenu = menus.data.filter((menu) => menu.current === true);
-    console.log(getActiveMenu[0].name);
-    console.log(getActiveMenu[0].items, "these are the items");
-    getActiveMenu[0].items.map((item) => {
-      console.log("item in menu", item);
+
+    let itemsList = [...getActiveMenu[0].items];
+    if (addons) {
+      itemsList.push(addons);
+    }
+    itemsList.map((item) => {
       content = (
         <FlatList
-          data={getActiveMenu[0].items}
+          data={itemsList}
           renderItem={({ item }) => <MenuCard item={item} />}
           keyExtractor={(item) => item._id}
           numColumns={1}
@@ -56,7 +65,13 @@ function Menu({ navigation }) {
       );
     });
 
-    return <>{content}</>;
+    return (
+      <>
+        <Text>Addons</Text>
+        <DropdownAddons addonsHandler={addonsData} />
+        {content}
+      </>
+    );
   }
 }
 export default Menu;

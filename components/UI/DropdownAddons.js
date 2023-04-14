@@ -2,37 +2,28 @@ import React from "react";
 import { Icon } from "@rneui/themed";
 import SelectDropdown from "react-native-select-dropdown";
 import { Colors } from "../../constants/styles";
-import {
-  useAddItemIntoMenuMutation,
-  useGetAllItemsQuery,
-} from "../../util/menuSlice";
+import { useDispatch, useSelector } from "react-redux";
+
 import LoadingOverlay from "./LoadingOverlay";
+import { useGetAddonsQuery } from "../../util/addonsSlice";
+import { addItem } from "../../Features/cart/cartSlice";
 
-function Dropdown({ id, items, addItemIdIntoNewMenu }) {
+function DropdownAddons({ addonsHandler }) {
+  const { items } = useSelector((store) => store.cart);
   //////////////////////// add item into menu mutation   /////////////
-  const [addItemIntoMenu, {}] = useAddItemIntoMenuMutation();
 
-  ////////////// get all item Query //////////////////
+  ////////////// get all addons Query //////////////////
   const {
-    data: allitems,
+    data: allAddons,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetAllItemsQuery();
+  } = useGetAddonsQuery();
+  const dispatch = useDispatch();
   function onSelectHandler(selectedItem, index) {
-    let itemId = allitems.data.filter((item) => item.name === index);
-
-    /////////////for add item into  menu  //////////
-    if (id) {
-      addItemIntoMenu({ menuId: id, itemId: itemId[0]._id })
-        .then((res) => console.log("success", res))
-        .catch((err) => console.log("here is an error", err));
-    }
-    ////////////////////// for item into new menu  ////////
-    else {
-      addItemIdIntoNewMenu(itemId);
-    }
+    let itemId = allAddons.data.filter((item) => item.name === index);
+    addonsHandler(itemId[0]);
   }
 
   ///////  change content according to data   ////////////
@@ -40,15 +31,10 @@ function Dropdown({ id, items, addItemIdIntoNewMenu }) {
   ///////// into old menu //////////////////////////////
   let content;
   if (isSuccess) {
-    const data = allitems.data;
+    const data = allAddons.data;
+    const filteredNames = data.map((item) => item.name);
+    const filteredIds = data.map((item) => item._id);
 
-    const filteredItems = id
-      ? data.filter(
-          (item) => !items.some((menuItem) => menuItem._id === item._id)
-        )
-      : data;
-    const filteredNames = filteredItems.map((item) => item.name);
-    const filteredIds = filteredItems.map((item) => item._id);
     content = (
       <SelectDropdown
         data={filteredNames}
@@ -80,4 +66,4 @@ function Dropdown({ id, items, addItemIdIntoNewMenu }) {
   return <>{content}</>;
 }
 
-export default Dropdown;
+export default DropdownAddons;
