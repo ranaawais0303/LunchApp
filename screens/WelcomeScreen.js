@@ -11,7 +11,7 @@ function WelcomeScreen({ navigation }) {
   const role = authCtx.getRole;
 
   ///////////////////////// Get Role base List from backend  /////////
-  function getListForRole(roles) {
+  function getListForRole() {
     getList(role).then((res) => {
       setList(res.data);
     });
@@ -19,7 +19,7 @@ function WelcomeScreen({ navigation }) {
 
   //////////////// Render list first when this page load //////////////
   useEffect(() => {
-    getListForRole(role);
+    getListForRole();
   }, []);
 
   function renderList(itemData) {

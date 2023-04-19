@@ -1,39 +1,51 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Colors } from "../../constants/styles";
-import { addItem } from "../../Features/cart/cartSlice";
+import { increaseAmount, decreaseAmount } from "../../Features/cart/cartSlice";
 import IconButton from "./IconButton";
 import { useDispatch, useSelector } from "react-redux";
 function MenuCard({ item }) {
-  console.log(item.price, "item from menu page");
+  const { items } = useSelector((store) => store.cart);
+
   const dispatch = useDispatch();
   const [amount, setAmount] = useState(0);
-  function amount1() {
+
+  //==========// check existing item and then set amount //==========
+  const itemid = items && items.filter((curItem) => curItem.name === item.name);
+
+  useEffect(() => {
+    if (itemid.length >= 1) {
+      setAmount(itemid[0].amount);
+    }
+  }, [itemid]);
+
+  //========// increament amount //==========//
+  function increase() {
     setAmount((prevState) => {
       const newAmount = prevState + 1;
       dispatch(
-        addItem({
+        increaseAmount({
           id: item._id,
           name: item.name,
           price: item.price,
-          amount: 1,
+          amount: newAmount,
         })
       );
-      console.log(newAmount, "________amount ----");
       return newAmount;
     });
-    // dispatch(
-    //   addItem({
-    //     id: item._id,
-    //     name: item.name,
-    //     price: item.price,
-    //     amount: amount,
-    //   })
-    // );
   }
-  function remove1() {
-    setAmount(amount - 1);
-    dispatch(removeItem(item.id));
+
+  //=========// Decreament of amount by 1  //================//
+  function decrease() {
+    setAmount((prevState) => {
+      if (prevState === 0) {
+        return prevState;
+      }
+      const newAmount = prevState - 1;
+      console.log("item id in menu card", item._id, "_______");
+      dispatch(decreaseAmount({ id: item._id }));
+      return newAmount;
+    });
   }
   return (
     <View style={styles.card}>
@@ -53,14 +65,14 @@ function MenuCard({ item }) {
               icon="remove"
               size={24}
               color="white"
-              onPress={remove1}
+              onPress={decrease}
             />
           </View>
           <Text style={{ fontSize: 24, color: "white", margin: 8 }}>
             {amount}
           </Text>
           <View style={styles.buttonContainer}>
-            <IconButton onPress={amount1} icon="add" size={24} color="white" />
+            <IconButton onPress={increase} icon="add" size={24} color="white" />
           </View>
         </View>
       </View>
@@ -80,11 +92,7 @@ const styles = StyleSheet.create({
 
     elevation: 5,
   },
-  image: {
-    width: 120,
-    height: 120,
-    borderRadius: 10,
-  },
+
   details: {
     flex: 1,
     padding: 10,

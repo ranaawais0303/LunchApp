@@ -2,14 +2,10 @@ import React from "react";
 import { Icon } from "@rneui/themed";
 import SelectDropdown from "react-native-select-dropdown";
 import { Colors } from "../../constants/styles";
-import { useDispatch, useSelector } from "react-redux";
-
 import LoadingOverlay from "./LoadingOverlay";
 import { useGetAddonsQuery } from "../../util/addonsSlice";
-import { addItem } from "../../Features/cart/cartSlice";
 
-function DropdownAddons({ addonsHandler }) {
-  const { items } = useSelector((store) => store.cart);
+function DropdownAddons({ addonsHandler, itemsList }) {
   //////////////////////// add item into menu mutation   /////////////
 
   ////////////// get all addons Query //////////////////
@@ -20,20 +16,24 @@ function DropdownAddons({ addonsHandler }) {
     isError,
     error,
   } = useGetAddonsQuery();
-  const dispatch = useDispatch();
+
+  //===========// Select handler when select any item from dropdown //=========//
+
   function onSelectHandler(selectedItem, index) {
     let itemId = allAddons.data.filter((item) => item.name === index);
     addonsHandler(itemId[0]);
   }
 
   ///////  change content according to data   ////////////
-  ////////// also set condition for new menu and add item ///
   ///////// into old menu //////////////////////////////
   let content;
   if (isSuccess) {
     const data = allAddons.data;
-    const filteredNames = data.map((item) => item.name);
-    const filteredIds = data.map((item) => item._id);
+    const filteredAddons = data.filter(
+      (item) => !itemsList.some((menuItem) => menuItem._id === item._id)
+    );
+    const filteredNames = filteredAddons.map((item) => item.name);
+    const filteredIds = filteredAddons.map((item) => item._id);
 
     content = (
       <SelectDropdown
@@ -48,12 +48,12 @@ function DropdownAddons({ addonsHandler }) {
         renderDropdownIcon={() => <Icon name="add" size={20} color="white" />}
         dropdownStyle={{ color: "white" }}
         buttonTextAfterSelection={(selectedItem, index) => {
-          return "Add Item";
+          return "Addons";
         }}
         rowTextForSelection={(item, index) => {
           return item;
         }}
-        defaultButtonText="Add Item"
+        defaultButtonText="Addons"
       />
     );
   } else if (isError) {

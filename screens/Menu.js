@@ -5,18 +5,22 @@ import { Badge } from "@rneui/base";
 import MenuCard from "../components/UI/MenuCard";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import IconButton from "../components/UI/IconButton";
-import Dropdown from "../components/UI/Dropdown";
 import { Colors } from "../constants/styles";
 import { useSelector } from "react-redux";
 import DropdownAddons from "../components/UI/DropdownAddons";
+import Button from "../components/UI/Button";
 function Menu({ navigation }) {
   const { totalAmount } = useSelector((store) => store.cart);
+  const { totalPrice } = useSelector((store) => store.cart);
   const [addons, setAddons] = useState();
 
   function addonsData(item) {
-    console.log("____________", item, "____addonsdata______");
-    setAddons(item);
+    setAddons((prev) => {
+      const newAddons = prev ? [...prev, item] : [item];
+      return newAddons;
+    });
   }
+  //=========// set screen options //======//
   navigation.setOptions({
     headerRight: ({ tintColor }) => (
       <View>
@@ -27,9 +31,10 @@ function Menu({ navigation }) {
           // onPress={openMenuModal}
         />
         <Badge
+          status="primary"
           value={totalAmount} // Set the value of the badge
           textStyle={{ color: "white" }} // Set the text style for the badge
-          badgeStyle={{ backgroundColor: Colors.primary800, width: 5 }} // Set the badge style
+          badgeStyle={{ backgroundColor: Colors.primary800 }} // Set the badge style
           containerStyle={{ position: "absolute", top: 0, right: 0 }}
         />
       </View>
@@ -43,33 +48,43 @@ function Menu({ navigation }) {
     error,
   } = useGetMenusQuery();
   let content;
+  // let itemsList;
   if (isLoading) {
     content = <LoadingOverlay />;
   } else if (isError) {
     <Text>{error}</Text>;
   } else if (isSuccess) {
+    //======// IF menus successfully loaded then select current menu //=====//
+
     const getActiveMenu = menus.data.filter((menu) => menu.current === true);
 
     let itemsList = [...getActiveMenu[0].items];
+
+    //========// if addons then add into list //========//
     if (addons) {
-      itemsList.push(addons);
+      itemsList.push(...addons);
     }
-    itemsList.map((item) => {
-      content = (
-        <FlatList
-          data={itemsList}
-          renderItem={({ item }) => <MenuCard item={item} />}
-          keyExtractor={(item) => item._id}
-          numColumns={1}
-        />
-      );
-    });
+
+    //===========// render the items list //========//
+    content = (
+      <FlatList
+        data={itemsList}
+        renderItem={({ item }) => <MenuCard item={item} />}
+        keyExtractor={(item) => item._id}
+        numColumns={1}
+      />
+    );
 
     return (
       <>
-        <Text>Addons</Text>
-        <DropdownAddons addonsHandler={addonsData} />
         {content}
+        <Text style={{ fontSize: 24, marginBottom: 20 }}>
+          Total Price :{totalPrice}
+        </Text>
+        <DropdownAddons addonsHandler={addonsData} itemsList={itemsList} />
+        <View style={{ marginVertical: 90, marginHorizontal: 20 }}>
+          <Button>Order</Button>
+        </View>
       </>
     );
   }
