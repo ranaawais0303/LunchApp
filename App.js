@@ -19,7 +19,6 @@ import Menus from "./screens/Menus";
 import { Provider } from "react-redux";
 import { store } from "./util/store";
 import Menu from "./screens/Menu";
-import CartProvider from "./store/cart-context";
 
 const Stack = createNativeStackNavigator();
 
@@ -140,13 +139,11 @@ export default function App() {
     <>
       <StatusBar style="light" />
       <AuthContextProvider>
-        <CartProvider>
-          <Provider store={store}>
-            {/* <ApiProvider api={[userSlice, menuSlice]}> */}
-            <Root />
-            {/* </ApiProvider> */}
-          </Provider>
-        </CartProvider>
+        <Provider store={store}>
+          {/* <ApiProvider api={[userSlice, menuSlice]}> */}
+          <Root />
+          {/* </ApiProvider> */}
+        </Provider>
       </AuthContextProvider>
     </>
   );

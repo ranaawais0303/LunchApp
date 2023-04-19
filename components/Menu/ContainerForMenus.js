@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, ScrollView } from "react-native";
-import StarterContainer from "./StarterContainer";
+import StarterContainer from "../UI/StarterContainer";
 function ContainerForMenus({ name, price, description }) {
+  //============// Container for menus //===========//
   return (
     <>
       <StarterContainer

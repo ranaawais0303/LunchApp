@@ -6,7 +6,7 @@ import {
   useAddItemIntoMenuMutation,
   useGetAllItemsQuery,
 } from "../../util/menuSlice";
-import LoadingOverlay from "./LoadingOverlay";
+import LoadingOverlay from "../UI/LoadingOverlay";
 
 function Dropdown({ id, items, addItemIdIntoNewMenu }) {
   //////////////////////// add item into menu mutation   /////////////

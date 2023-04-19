@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 // import { ListItem } from "react-native-elements";
 import { FlatList, View, Alert } from "react-native";
-import MenuExpand from "../components/UI/MenuExpand";
+import MenuExpand from "../components/Menu/MenuExpand";
 import { useGetMenusQuery, useUpdateCurrentMutation } from "../util/menuSlice";
 import IconButton from "../components/UI/IconButton";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
-import AddMenu from "../components/UI/AddMenu";
+import AddMenu from "../components/Menu/AddMenu";
 function Menus({ navigation }) {
   navigation.setOptions({
     headerRight: ({ tintColor }) => (

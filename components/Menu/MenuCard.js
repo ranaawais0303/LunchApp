@@ -2,9 +2,10 @@ import React, { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { Colors } from "../../constants/styles";
 import { increaseAmount, decreaseAmount } from "../../Features/cart/cartSlice";
-import IconButton from "./IconButton";
+import IconButton from "../UI/IconButton";
 import { useDispatch, useSelector } from "react-redux";
 function MenuCard({ item }) {
+  //===========//  redux items  //===============//
   const { items } = useSelector((store) => store.cart);
 
   const dispatch = useDispatch();
@@ -42,7 +43,6 @@ function MenuCard({ item }) {
         return prevState;
       }
       const newAmount = prevState - 1;
-      console.log("item id in menu card", item._id, "_______");
       dispatch(decreaseAmount({ id: item._id }));
       return newAmount;
     });

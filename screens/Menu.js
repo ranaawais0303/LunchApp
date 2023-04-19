@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { View, Text, FlatList } from "react-native";
 import { useGetMenusQuery } from "../util/menuSlice";
 import { Badge } from "@rneui/base";
-import MenuCard from "../components/UI/MenuCard";
+import MenuCard from "../components/Menu/MenuCard";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import IconButton from "../components/UI/IconButton";
 import { Colors } from "../constants/styles";
 import { useSelector } from "react-redux";
-import DropdownAddons from "../components/UI/DropdownAddons";
+import DropdownAddons from "../components/dropdown/DropdownAddons";
 import Button from "../components/UI/Button";
 function Menu({ navigation }) {
   const { totalAmount } = useSelector((store) => store.cart);

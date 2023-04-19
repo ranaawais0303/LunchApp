@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Icon, ListItem } from "@rneui/themed";
 import { Colors } from "../../constants/styles";
 import ContainerForMenus from "./ContainerForMenus";
-import Dropdown from "./Dropdown";
+import Dropdown from "../dropdown/Dropdown";
 
 function MenuExpand({ itemData, checkhandle }) {
   const [expanded, setExpanded] = useState(false);

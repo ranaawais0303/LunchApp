@@ -2,7 +2,7 @@ import React from "react";
 import { Icon } from "@rneui/themed";
 import SelectDropdown from "react-native-select-dropdown";
 import { Colors } from "../../constants/styles";
-import LoadingOverlay from "./LoadingOverlay";
+import LoadingOverlay from "../UI/LoadingOverlay";
 import { useGetAddonsQuery } from "../../util/addonsSlice";
 
 function DropdownAddons({ addonsHandler, itemsList }) {

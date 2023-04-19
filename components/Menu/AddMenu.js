@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import { Modal, View, Text } from "react-native";
+import { Modal, View } from "react-native";
 import Input from "../Auth/Input";
-import StarterContainer from "./StarterContainer";
-import Button from "./Button";
-import LoadingOverlay from "./LoadingOverlay";
-import Dropdown from "./Dropdown";
+import StarterContainer from "../UI/StarterContainer";
+import Button from "../UI/Button";
+import Dropdown from "../dropdown/Dropdown";
 import { useAddMenuMutation } from "../../util/menuSlice";
 function AddMenu({ onPress }) {
+  //==============// This is for new Menu //===============//
+
   ////////// states       ////////////
   const [data, setData] = useState({
     name: "",
