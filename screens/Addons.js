@@ -1,17 +1,20 @@
 import React, { useState } from "react";
 import { View, Text, FlatList } from "react-native";
 import IconButton from "../components/UI/IconButton";
-import Add_addons from "../components/items/Add_addons";
+import Add_Item from "../components/items/Add_Item";
 import {
   useGetAddonsQuery,
   useUpdateAddonsMutation,
   useDeleteAddonsDataMutation,
+  useAddAddonsMutation,
 } from "../util/addonsSlice";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import ContainerForMenus from "../components/Menu/ContainerForMenus";
 import Items from "../components/items/Items";
 function Addons({ navigation }) {
   const [openModal, setOpenModal] = useState(false);
+
+  //===================// Addons API's  //==============//
   const [updateAddons, {}] = useUpdateAddonsMutation();
   const {
     data: addons,
@@ -22,6 +25,8 @@ function Addons({ navigation }) {
   } = useGetAddonsQuery();
   const [deleteAddonsData, {}] = useDeleteAddonsDataMutation();
 
+  const [addAddons, {}] = useAddAddonsMutation();
+  //===============//  Here set the options //====================//
   navigation.setOptions({
     headerRight: ({ tintColor }) => (
       <IconButton
@@ -33,7 +38,7 @@ function Addons({ navigation }) {
     ),
   });
 
-  //===============// Handlers  //======================
+  //===============// Handlers  //======================//
   function openModalHandler() {
     setOpenModal(!openModal);
   }
@@ -71,7 +76,9 @@ function Addons({ navigation }) {
           keyExtractor={(item) => item._id}
           ItemSeparatorComponent={() => <View style={{ height: 1 }} />}
         />
-        {openModal && <Add_addons onPress={openModalHandler} addons={true} />}
+        {openModal && (
+          <Add_Item onPress={openModalHandler} addData={addAddons} />
+        )}
       </>
     );
   }

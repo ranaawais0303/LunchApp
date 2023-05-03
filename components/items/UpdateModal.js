@@ -3,6 +3,7 @@ import { Modal, View, Text } from "react-native";
 import Input from "../Auth/Input";
 import Button from "../UI/Button";
 import StarterContainer from "../UI/StarterContainer";
+import LoadingOverlay from "../UI/LoadingOverlay";
 function UpdateModal({ item, onPress, updatedData }) {
   console.log(item, "item from update modal");
   const [data, setData] = useState({
@@ -44,7 +45,7 @@ function UpdateModal({ item, onPress, updatedData }) {
     }
   }
   //========//  Here is the update api use when click on update button  //===========//
-  async function editData() {
+  function editData() {
     const UpdatedDat = {
       name: data.name,
       price: data.price,
@@ -54,8 +55,12 @@ function UpdateModal({ item, onPress, updatedData }) {
     const itemId = item.id;
 
     //============//  Update API USE here  //===============//
-    const response = await updatedData({ itemId, updatedData: UpdatedDat });
-    onPress(false);
+    const response = updatedData({ itemId, updatedData: UpdatedDat });
+    if (response) {
+      onPress(false);
+    } else {
+      return <LoadingOverlay />;
+    }
   }
 
   //=================//  Render Modal if Item exist  //===============//
