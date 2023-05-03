@@ -23,11 +23,11 @@ function Users(props) {
     isLoading,
     isSuccess,
     isError,
-    isFetching,
     error,
   } = useGetUsersQuery();
   const [deleteUserData, {}] = useDeleteUserDataMutation();
 
+  //==================//  Content according to the state of data  //================//
   let content;
   if (isLoading) {
     content = <LoadingOverlay />;
@@ -59,19 +59,22 @@ function Users(props) {
         ]}
       </>
     );
-  } else if (isFetching) {
-    <LoadingOverlay />;
   }
 
+  //===================// modal open or close set from Edid Modal  //============//
   function editHandler(val) {
     setShowEdit(val);
   }
+
+  //================// Update Handler and set user to send update/Edit Modal  //===========//
   function updateHandler(myUser) {
     console.log("update Handler");
     setUser(myUser);
     console.log(myUser);
     setShowEdit(true);
   }
+
+  //=============//  Delete Handler delete User'API Use //==================//
   function deleteHandler(id) {
     console.log("here is the id", id);
     Alert.alert("DELETE", "Are You Sure You want to delete user?", [
@@ -83,9 +86,6 @@ function Users(props) {
       {
         text: "OK",
         onPress: async () => {
-          // deleteUser({
-          //   id: id,
-          // })
           await deleteUserData(id)
             .then((res) => {
               Alert.alert("data deleted successfully");
@@ -96,6 +96,7 @@ function Users(props) {
     ]);
   }
 
+  //==================// Render List //====================//
   function MyList(itemData) {
     return (
       <SafeAreaView>
@@ -135,27 +136,9 @@ function Users(props) {
       </SafeAreaView>
     );
   }
-  return (
-    <>
-      {content}
 
-      {/* {!showEdit}
-      {/* {!list && <LoadingOverlay />} */}
-      {/* {list && [
-        <StarterContainer style={{ marginHorizontal: 5 }}>
-          <FlatList
-            style={styles.com}
-            data={list}
-            renderItem={MyList}
-            keyExtractor={(item) => item._id}
-            numColumns={1}
-          />
-        </StarterContainer>,
-        showEdit && <EditModal user={user} onPress={editHandler} />,
-      ]}{" "}
-      */}
-    </>
-  );
+  //============// Content Render  //==================//
+  return <>{content}</>;
 }
 
 export default Users;
@@ -174,34 +157,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  //   com: {
-  //     margin: 10,
-  //   },
-  //   container: {
-  //     flex: 1,
-
-  //     // backgroundColor: Colors.primary100,
-  //     // alignItems: "center",
-  //     // justifyContent: "center",
-  //   },
-
-  //   rowHead: {
-  //     flex: 1,
-  //     flexDirection: "row",
-  //     marginBottom: 10,
-  //     backgroundColor: Colors.primary800,
-  //     justifyContent: "flex-start",
-  //     alignItems: "center",
-  //     paddingHorizental: 10,
-  //   },
-  //   column: {
-  //     // flex: 1,
-  //     // borderWidth: 0.5,
-  //     // borderColor: "#00003B",
-  //     // width: 300,
-  //     // height: 300,
-  //     alignItems: "center",
-  //     justifyContent: "center",
-  //     padding: 10,
-  //   },
 });

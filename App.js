@@ -2,24 +2,27 @@
 import { useState, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+//
+import AuthContextProvider, { useAuth } from "./store/auth-context";
+import { Provider } from "react-redux";
+import { store } from "./util/store";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
+//
 import { StatusBar } from "expo-status-bar";
+import { Colors } from "./constants/styles";
+import IconButton from "./components/UI/IconButton";
+//
 import LoginScreen from "./screens/LoginScreen";
 import SignupScreen from "./screens/SignupScreen";
 import WelcomeScreen from "./screens/WelcomeScreen";
-import { Colors } from "./constants/styles";
 import OTPScreen from "./screens/OTPScreen";
-import AuthContextProvider, { useAuth } from "./store/auth-context";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import IconButton from "./components/UI/IconButton";
 import ForgotScreen from "./screens/ForgotScreen";
-import ChangePasswordScreen from "./screens/ChangePasswordScreen";
-import axios from "axios";
 import Users from "./screens/Users";
 import Menus from "./screens/Menus";
-import { Provider } from "react-redux";
-import { store } from "./util/store";
+import ChangePasswordScreen from "./screens/ChangePasswordScreen";
 import Menu from "./screens/Menu";
-
+import Addons from "./screens/Addons";
 const Stack = createNativeStackNavigator();
 
 function AuthStack() {
@@ -68,6 +71,7 @@ function AuthenticatedStack() {
         <Stack.Screen name="Users" component={Users} />,
         <Stack.Screen name="Menus" component={Menus} />,
         <Stack.Screen name="Menu" component={Menu} />,
+        <Stack.Screen name="Addons" component={Addons} />,
         //   <Stack.Screen name="Orders" />
         // )(<Stack.Screen name="Notifications" />)(<Stack.Screen name="User" />),
       ]}

@@ -11,7 +11,7 @@ function MenuCard({ item }) {
   const dispatch = useDispatch();
   const [amount, setAmount] = useState(0);
 
-  //==========// check existing item and then set amount //==========
+  //==========// check existing item and then set amount //==========//
   const itemid = items && items.filter((curItem) => curItem.name === item.name);
 
   useEffect(() => {
@@ -20,7 +20,7 @@ function MenuCard({ item }) {
     }
   }, [itemid]);
 
-  //========// increament amount //==========//
+  //==================// increament amount //=======================//
   function increase() {
     setAmount((prevState) => {
       const newAmount = prevState + 1;

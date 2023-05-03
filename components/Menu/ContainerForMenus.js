@@ -1,7 +1,8 @@
-import React from "react";
-import { View, Text, ScrollView } from "react-native";
+import React, { useState } from "react";
+import { ScrollView } from "react-native";
 import StarterContainer from "../UI/StarterContainer";
-function ContainerForMenus({ name, price, description }) {
+import ContainerBasic from "../containerBasic/ContainerBasic";
+function ContainerForMenus({ id, name, price, description }) {
   //============// Container for menus //===========//
   return (
     <>
@@ -9,47 +10,12 @@ function ContainerForMenus({ name, price, description }) {
         style={{ width: "90%", marginHorizontal: 15, marginTop: 2 }}
       >
         <ScrollView>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-around",
-              alignItems: "space-around",
-            }}
-          >
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flex: 1,
-              }}
-            >
-              <Text style={{ color: "white" }}>{name}</Text>
-            </View>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flex: 1,
-                borderLeftWidth: 1,
-                borderColor: "white",
-              }}
-            >
-              <Text style={{ color: "white" }}>{price}</Text>
-            </View>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                flex: 1,
-                borderLeftWidth: 1,
-                borderColor: "white",
-              }}
-            >
-              <Text style={{ color: "white" }}>
-                {description ? description : "NA"}
-              </Text>
-            </View>
-          </View>
+          <ContainerBasic
+            name={name}
+            price={price}
+            description={description}
+            id={id}
+          />
         </ScrollView>
       </StarterContainer>
     </>

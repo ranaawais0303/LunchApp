@@ -22,11 +22,11 @@ export const addonsSlice = createApi({
       invalidatesTags: ["Addons"],
     }),
     updateAddons: builder.mutation({
-      query: ({ itemId, updatedAddonsData }) => {
+      query: ({ itemId, updatedData }) => {
         return {
           url: `/updateItem/${itemId}`,
           method: "PATCH",
-          body: updatedAddonsData,
+          body: updatedData,
         };
       },
       invalidatesTags: ["Addons"],
