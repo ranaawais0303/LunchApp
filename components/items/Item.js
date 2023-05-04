@@ -3,7 +3,7 @@ import ContainerBasic from "../containerBasic/ContainerBasic";
 import StarterContainer from "../UI/StarterContainer";
 
 //=============// Data coming from addons or items //==========//
-function Items({ id, name, price, description, update, deleteData }) {
+function Item({ id, name, price, description, update, deleteData }) {
   return (
     <StarterContainer
       style={{ width: "90%", marginHorizontal: 15, marginTop: 2 }}
@@ -21,4 +21,4 @@ function Items({ id, name, price, description, update, deleteData }) {
   );
 }
 
-export default Items;
+export default Item;

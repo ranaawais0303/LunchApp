@@ -23,6 +23,7 @@ import Menus from "./screens/Menus";
 import ChangePasswordScreen from "./screens/ChangePasswordScreen";
 import Menu from "./screens/Menu";
 import Addons from "./screens/Addons";
+import Items from "./screens/Items";
 const Stack = createNativeStackNavigator();
 
 function AuthStack() {
@@ -72,6 +73,7 @@ function AuthenticatedStack() {
         <Stack.Screen name="Menus" component={Menus} />,
         <Stack.Screen name="Menu" component={Menu} />,
         <Stack.Screen name="Addons" component={Addons} />,
+        <Stack.Screen name="Items" component={Items} />,
         //   <Stack.Screen name="Orders" />
         // )(<Stack.Screen name="Notifications" />)(<Stack.Screen name="User" />),
       ]}

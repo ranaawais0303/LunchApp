@@ -3,28 +3,28 @@ import { View, Text, FlatList } from "react-native";
 import IconButton from "../components/UI/IconButton";
 import Add_Item from "../components/items/Add_Item";
 import {
-  useGetAddonsQuery,
-  useUpdateAddonsMutation,
-  useDeleteAddonsDataMutation,
-  useAddAddonsMutation,
-} from "../util/addonsSlice";
+  useGetAllItemsQuery,
+  useUpdateItemMutation,
+  useDeleteItemDataMutation,
+  useAddItemMutation,
+} from "../util/menuSlice";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import Item from "../components/items/Item";
-function Addons({ navigation }) {
+function Items({ navigation }) {
   const [openModal, setOpenModal] = useState(false);
 
   //===================// Addons API's  //==============//
-  const [updateAddons, {}] = useUpdateAddonsMutation();
+  const [updateItem, {}] = useUpdateItemMutation();
   const {
-    data: addons,
+    data: items,
     isLoading,
     isSuccess,
     isError,
     error,
-  } = useGetAddonsQuery();
-  const [deleteAddonsData, {}] = useDeleteAddonsDataMutation();
+  } = useGetAllItemsQuery();
+  const [deleteItemData, {}] = useDeleteItemDataMutation();
 
-  const [addAddons, {}] = useAddAddonsMutation();
+  const [addItem, {}] = useAddItemMutation();
   //===============//  Here set the options //====================//
   navigation.setOptions({
     headerRight: ({ tintColor }) => (
@@ -42,7 +42,7 @@ function Addons({ navigation }) {
     setOpenModal(!openModal);
   }
 
-  //=========// Render List send data to Items component  //=============//
+  //=========// Render List send data to Item component  //=============//
   function renderList(itemData) {
     //======//  here are update and deleteData are the slice/API's  //========//
     return (
@@ -52,8 +52,8 @@ function Addons({ navigation }) {
           name={itemData.item.name}
           price={itemData.item.price}
           description={itemData.item.description}
-          update={updateAddons}
-          deleteData={deleteAddonsData}
+          update={updateItem}
+          deleteData={deleteItemData}
         />
       </>
     );
@@ -70,14 +70,12 @@ function Addons({ navigation }) {
     content = (
       <>
         <FlatList
-          data={addons.data}
+          data={items.data}
           renderItem={renderList}
           keyExtractor={(item) => item._id}
           ItemSeparatorComponent={() => <View style={{ height: 1 }} />}
         />
-        {openModal && (
-          <Add_Item onPress={openModalHandler} addData={addAddons} />
-        )}
+        {openModal && <Add_Item onPress={openModalHandler} addData={addItem} />}
       </>
     );
   }
@@ -85,4 +83,4 @@ function Addons({ navigation }) {
   return <View>{content}</View>;
 }
 
-export default Addons;
+export default Items;
