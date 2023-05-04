@@ -7,7 +7,7 @@ import {
   useUpdateItemMutation,
   useDeleteItemDataMutation,
   useAddItemMutation,
-} from "../util/menuSlice";
+} from "../util/ItemsSlice";
 import LoadingOverlay from "../components/UI/LoadingOverlay";
 import Item from "../components/items/Item";
 function Items({ navigation }) {
@@ -15,6 +15,7 @@ function Items({ navigation }) {
 
   //===================// Addons API's  //==============//
   const [updateItem, {}] = useUpdateItemMutation();
+  console.log(items, "items load perfactly");
   const {
     data: items,
     isLoading,

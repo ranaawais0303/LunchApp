@@ -6,7 +6,6 @@ export const menuSlice = createApi({
     baseUrl: "http://192.168.1.124:8000/api/Menu",
   }),
   tagTypes: ["Menus"],
-  tagTypes: ["Items"],
   endpoints: (builder) => ({
     getMenus: builder.query({
       query: () => "/getMenus",
@@ -14,8 +13,9 @@ export const menuSlice = createApi({
     }),
     getAllItems: builder.query({
       query: () => "/getItems",
-      providesTags: ["Items"],
+      invalidatesTags: ["Menus"],
     }),
+
     updateMenu: builder.mutation({
       query: ({ menuId, UpdatedmenuData }) => {
         return {
@@ -26,18 +26,7 @@ export const menuSlice = createApi({
       },
       invalidatesTags: ["Menus"],
     }),
-    updateItem: builder.mutation({
-      query: ({ itemId, updatedData }) => {
-        console.log("________________itemID_", itemId);
-        console.log("________________itemDatta_", updatedData);
-        return {
-          url: `/updateItem/${itemId}`,
-          method: "PATCH",
-          body: updatedData,
-        };
-      },
-      invalidatesTags: ["Items"],
-    }),
+
     deleteMenuData: builder.mutation({
       query: (menuId) => ({
         url: `/${menuId}`,
@@ -45,16 +34,9 @@ export const menuSlice = createApi({
       }),
       invalidatesTags: ["Menus"],
     }),
-    deleteItemData: builder.mutation({
-      query: (itemId) => ({
-        url: `/deleteItem/${itemId}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["Items"],
-    }),
+
     updateCurrent: builder.mutation({
       query: (menuId) => {
-        console.log("here is update current from slice method", menuId);
         return {
           url: `updateCurr/${menuId}`,
           method: "PUT",
@@ -82,16 +64,6 @@ export const menuSlice = createApi({
       },
       invalidatesTags: ["Menus"],
     }),
-    addItem: builder.mutation({
-      query: (item) => {
-        return {
-          url: "/AddItem",
-          method: "POST",
-          body: item,
-        };
-      },
-      invalidatesTags: ["Items"],
-    }),
   }),
 });
 
@@ -100,15 +72,12 @@ export const {
   useGetAllItemsQuery,
   //
   useUpdateMenuMutation,
-  useUpdateItemMutation,
   //
   useDeleteMenuDataMutation,
-  useDeleteItemDataMutation,
   //
   useUpdateCurrentMutation,
   useAddItemIntoMenuMutation,
   //
   useAddMenuMutation,
-  useAddItemMutation,
 } = menuSlice;
 export const menuReducer = menuSlice.reducer;
